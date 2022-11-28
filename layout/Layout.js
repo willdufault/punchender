@@ -5,8 +5,8 @@ export const layout =
 		margin: 0,
 		padding: 0,
 		boxSizing: "border-box",
-		width: "100vw",
-		height: "100vh",
+		width: "100%",
+		height: "100%",
 		background: "#191919"
 	},
 
@@ -78,7 +78,12 @@ export const layout =
 		margin: 10
 	},
 
-	admin_wrapper:
+	dashboard_wrapper:
+	{
+		border: "4px double orange"
+	},
+
+	admin_dashboard:
 	{
 		width: "fit-content",
 		margin: "auto"
@@ -90,15 +95,15 @@ export const layout =
 		color: "red"
 	},
 
-	developer_wrapper:
+	developer_dashboard:
 	{
 		border: "1px double lightblue",
 		margin: "2%"
 	},
 
-	supporter_wrapper:
+	supporter_dashboard:
 	{
 		border: "1px double lightblue",
 		margin: "2%"
 	}
-};
+}; 	

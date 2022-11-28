@@ -12,7 +12,7 @@ function App()
 
 				{/* comment out either Register or the div to see what it will look like */}
 				
-				<p>Register</p>
+				{/* <p>Register</p> */}
 				<div className="header-user-wrapper" style={layout.header_user_wrapper}>
 					<p>JS: USERNAME</p>
 					<p className="header-vertical-divider" style={layout.header_vertical_divider}>|</p>
@@ -20,21 +20,22 @@ function App()
 				</div>
 			</header>
 			<div className="header-line" style={layout.header_line}></div>
+
+			{/* hide all but current role */}
+			<div className="dashboard-wrapper" style={layout.dashboard_wrapper}>
+				<div className="admin-dashboard" style={layout.admin_dashboard}>
+					<button className="reap-projects-button" style={layout.reap_projects_button}>Reap Projects</button>
+				</div>
+				<div className="developer-dashboard" style={layout.developer_dashboard}>
+					DEVELOPER ONLY STUFF GOES HERE
+				</div>
+				<div className="supporter-dashboard" style={layout.supporter_dashboard}>
+					SUPPORTER ONLY STUFF GOES HERE
+				</div>
+			</div>
 			<div className="search-projects-wrapper" style={layout.search_projects_wrapper}>
 				<input className="search-projects-bar" type="text" placeholder="Search Projects..." style={layout.search_projects_bar}></input>
 				<div className="projects-list-wrapper" style={layout.projects_list_wrapper}>infinite scroll projects go here</div>
-			</div>
-
-			{/* hide all but current role */}
-
-			<div className="admin-wrapper" style={layout.admin_wrapper}>
-				<button className="reap-projects-button" style={layout.reap_projects_button}>Reap Projects</button>
-			</div>
-			<div className="developer-wrapper" style={layout.developer_wrapper}>
-				DEVELOPER ONLY STUFF GOES HERE
-			</div>
-			<div className="supporter-wrapper" style={layout.supporter_wrapper}>
-				SUPPORTER ONLY STUFF GOES HERE
 			</div>
 		</main>
 	);
