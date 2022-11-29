@@ -80,30 +80,130 @@ export const layout =
 
 	dashboard_wrapper:
 	{
-		border: "4px double orange"
+		border: "4px double green",
+		margin: "1% 2%",
+		padding: "1%",
+		color: "white"
+	},
+
+	dashboard_title:
+	{
+		margin: 0,
+		fontSize: 30
 	},
 
 	admin_dashboard:
 	{
-		width: "fit-content",
-		margin: "auto"
+		border: "1px double blue",
+		display: "flex",
+		alignItems: "center",
+		flexDirection: "column",
+		gap: 30
 	},
 
 	reap_projects_button:
 	{
-		fontSize: 40,
+		fontSize: 30,
 		color: "red"
 	},
 
 	developer_dashboard:
 	{
-		border: "1px double lightblue",
-		margin: "2%"
+		border: "1px double hotpink"
 	},
 
 	supporter_dashboard:
 	{
-		border: "1px double lightblue",
-		margin: "2%"
+		border: "1px double yellow"
+	},
+
+
+
+	// TODO: popups have a lot of repeated code, make a popup class that contains all repeated code
+
+	// popups:
+	register_popup:
+	{
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",
+		width: "fit-content",
+		display: "none"  // hidden by default
+	},
+
+	create_project_popup:
+	{
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",
+		width: "fit-content",
+		display: "none"  // hidden by default
+	},
+
+	create_pledge_popup:
+	{
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",
+		width: "fit-content",
+		display: "none"  // hidden by default
+	},
+
+	view_project_popup:
+	{
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "flex-start",
+		width: "fit-content",
+		display: "none"  // hidden by default
+	},
+
+	add_funds_popup:
+	{
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",
+		width: "fit-content",
+		display: "none"  // hidden by default
 	}
 }; 	
