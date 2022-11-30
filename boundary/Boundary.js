@@ -1,10 +1,12 @@
 export class Boundary
 {
-	// example function
-	// NOTE: using static allows you to do Boundary.redrawCanvas() in App.js
-	// 		 so we don't have to import each function individually
-	static redrawCanvas(model, cvs)
+	static openPopup(r)
 	{
-		// draw stuff
+		r.style.display = "flex";
+	}
+
+	static closePopup(r)
+	{
+		r.style.display = "none";
 	}
 }

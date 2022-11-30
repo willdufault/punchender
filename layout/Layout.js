@@ -3,7 +3,7 @@ export const layout =
 	App:
 	{
 		margin: 0,
-		padding: 0,
+		paddingBottom: 1,
 		boxSizing: "border-box",
 		width: "100%",
 		height: "100%",
@@ -15,7 +15,7 @@ export const layout =
 		display: "flex",
 		justifyContent: "space-between",
 		alignItems: "center",
-		padding: "0 2%",
+		margin: "0 2%",
 		fontSize: 20,
 		color: "white"
 		// border: "3px solid blue"
@@ -25,7 +25,9 @@ export const layout =
 	{
 		fontSize: 32,
 		fontFamily: "Courier New, Monospace",
-		color: "red"
+		color: "red",
+		cursor: "pointer",
+		textDecoration: "none"
 	},
 
 	header_user_wrapper:
@@ -40,7 +42,8 @@ export const layout =
 	header_vertical_divider:
 	{
 		fontSize: 24,
-		color: "red"
+		color: "red",
+		cursor: "default"
 	},
 
 	header_line:
@@ -58,6 +61,7 @@ export const layout =
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
+		gap: 10
 	},
 
 	search_projects_bar:
@@ -107,14 +111,47 @@ export const layout =
 		color: "red"
 	},
 
-	developer_dashboard:
+	designer_dashboard:
 	{
-		border: "1px double hotpink"
+		border: "1px double hotpink",
+		display: "flex",
+		alignItems: "center",
+		flexDirection: "column",
+		gap: 30
 	},
 
 	supporter_dashboard:
 	{
-		border: "1px double yellow"
+		border: "1px double yellow",
+		display: "flex",
+		alignItems: "center",
+		flexDirection: "column",
+		gap: 30
+	},
+
+	supporter_activity_entry:
+	{
+		width: "100%",
+		display: "flex",
+		justifyContent: "space-between"
+	},
+
+	close_button:
+	{
+		marginLeft: "auto"
+	},
+
+	pointer:
+	{
+		cursor: "pointer"
+	},
+
+	search_result:
+	{
+		border: "2px double pink",
+		background: "lightgray",
+		width: "98%",
+		padding: "1%"
 	},
 
 
@@ -122,9 +159,26 @@ export const layout =
 	// TODO: popups have a lot of repeated code, make a popup class that contains all repeated code
 
 	// popups:
+	login_popup:
+	{
+		position: "fixed",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",	
+		width: "fit-content",
+		display: "none"  // hidden by default
+	},
+	
 	register_popup:
 	{
-		position: "absolute",
+		position: "fixed",
 		top: "50%",
 		left: "50%",
 		transform: "translate(-50%, -50%)",
@@ -141,7 +195,7 @@ export const layout =
 
 	create_project_popup:
 	{
-		position: "absolute",
+		position: "fixed",
 		top: "50%",
 		left: "50%",
 		transform: "translate(-50%, -50%)",
@@ -158,7 +212,8 @@ export const layout =
 
 	create_pledge_popup:
 	{
-		position: "absolute",
+		zIndex: "1",  // to go above the create project popup
+		position: "fixed",
 		top: "50%",
 		left: "50%",
 		transform: "translate(-50%, -50%)",
@@ -175,7 +230,7 @@ export const layout =
 
 	view_project_popup:
 	{
-		position: "absolute",
+		position: "fixed",
 		top: "50%",
 		left: "50%",
 		transform: "translate(-50%, -50%)",
@@ -190,9 +245,43 @@ export const layout =
 		display: "none"  // hidden by default
 	},
 
+	view_pledge_popup:
+	{
+		position: "fixed",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",
+		width: "fit-content",
+		display: "none"  // hidden by default
+	},
+
 	add_funds_popup:
 	{
-		position: "absolute",
+		position: "fixed",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",
+		width: "fit-content",
+		display: "none"  // hidden by default
+	},
+
+	direct_support_popup:
+	{
+		position: "fixed",
 		top: "50%",
 		left: "50%",
 		transform: "translate(-50%, -50%)",

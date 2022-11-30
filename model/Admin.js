@@ -1,18 +1,18 @@
 export class Admin
 {
-	constructor(email, password)
+	constructor(username, password)
 	{
-		this.email = email;  // email used to login (string)
+		this.username = username;  // username used to login (string)
 		this.password = password;  // password used to login (string)
 	}
 
 	reapProjects()
 	{
-		// TODO: lambda:  { email }
+		// TODO: lambda:  { username }
 	}
 
 	deleteProject(proj)
 	{
-		// TODO: lambda: { email, proj_name }
+		// TODO: lambda: { username, proj_name }
 	}
 }

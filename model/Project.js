@@ -5,7 +5,7 @@ export class Project
 		this.name = name;  // name of project (string)
 		this.story = story;  // this project's story (string)
 		this.type = type;  // this project's type (string)
-		this.creator = creator;  // email of designer that created this project
+		this.creator = creator;  // username of designer that created this project
 		this.goal = goal;  // goal for this project (float)
 		this.amount = 0;  // current amount out of goal (float)
 		this.launched = false;  // is project active/launched (bool)

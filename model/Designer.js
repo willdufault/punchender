@@ -1,39 +1,39 @@
 export class Designer
 {
-	constructor(email, password)
+	constructor(username, password)
 	{
-		this.email = email;  // email used to login (string)
+		this.username = username;  // username used to login (string)
 		this.password = password;  // password used to login (string)
 		this.projects = [];  // list of projects by this designer (list(Project))
 	}
 
 	createProject(proj)
 	{
-		// TODO: lambda: { email, proj: { proj_info } }
+		// TODO: lambda: { username, proj: { proj_info } }
 	}
 
 	deleteProject(proj)
 	{
-		// TODO: lambda: { email, proj_name }
+		// TODO: lambda: { username, proj_name }
 	}
 
 	createPledge(proj, p)
 	{
-		// TODO: lambda: { email, proj_name, p: { p_info } }
+		// TODO: lambda: { username, proj_name, p: { p_info } }
 	}
 
 	deletePledge(proj, p)
 	{
-		// TODO: lambda: { email, proj_name, p_name }
+		// TODO: lambda: { username, proj_name, p_name }
 	}
 
 	launchProject(proj)
 	{
-		// TODO: lambda: { email, proj_name }
+		// TODO: lambda: { username, proj_name }
 	}
 
 	reviewProjectActivity(proj)
 	{
-		// TODO: lambda: { email, proj_name }
+		// TODO: lambda: { username, proj_name }
 	}
 }
