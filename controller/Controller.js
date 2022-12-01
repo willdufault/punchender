@@ -40,6 +40,7 @@ export class Controller
 
 	static register(model, user, pw, role)
 	{
+<<<<<<< HEAD
 		let data =
 		{
 			"username": user,
@@ -64,14 +65,78 @@ export class Controller
 			else
 			{
 				alert("cannot register. there is already a user with that name.");
+=======
+		let data = {};
+		data["username"] = user;
+		data["password"] = pw;
+		
+		console.log(user)
+		console.log(pw)
+
+	
+		let add_url = base_url + "designer"
+		console.log(data)
+
+		let body = JSON.stringify(data);
+		
+		console.log(body)
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", add_url, true);
+		
+		// var body2 = {
+		// 	"body": body
+		// }
+
+		// var body3 = JSON.stringify(body2);
+
+		// var body2 = {
+		// 	"body": "{\n    \"username\": \"yoyo4\",\n    \"password\": \"yoyo4\"\n}"
+		//   };
+		// console.log(body3)
+		xhr.send(body);
+
+		xhr.onloadend = function () {
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				// let response =  JSON.parse(xhr.body);
+				console.log(JSON.parse(xhr.response).statusCode)
+				let code = JSON.parse(xhr.response).statusCode
+				if(code === 200){
+					console.log(code)
+					alert("successfully registered.");
+				}
+				else {
+					alert("cannot register. there is already a user with that name.");
+				}
+>>>>>>> c6ab98802366dbdadd3bde7d3af998c10e234666
 			}
+			else {
+				alert("Error: " + xhr.response.statusCode);
+			}
+			console.log(xhr.response)
 		}
+<<<<<<< HEAD
 		else
 		{
 			alert("Error: " + xhr.response.statusCode);
 		}
 		console.log(xhr.response)
 		}
+=======
+
+		// for(let i = 0; i < model.db.users.length; i++)
+		// {
+		// 	let cur = model.db.users[i];
+		// 	if(cur.username === user)
+		// 	{
+		// 		alert("cannot register. there is already a user with that name.");
+		// 		return;
+		// 	}
+		// }
+		// got through without issues
+		// model.db.users.push({"username": user, "password": pw, "role": role});
+		// alert("successfully registered.");
+>>>>>>> c6ab98802366dbdadd3bde7d3af998c10e234666
 	}
 
 	static fetchSupporterActivity(model)
