@@ -14,14 +14,26 @@ function App()
 	}, [model]);
 
 	const register_popup_ref = React.useRef(0);
+	const register_popup_role_ref = React.useRef(0);
+	const register_popup_username_ref = React.useRef(0);
+	const register_popup_password_ref = React.useRef(0);
 	const login_popup_ref = React.useRef(0);
+	const login_popup_username_ref = React.useRef(0);
+	const login_popup_password_ref = React.useRef(0);
 	const create_project_popup_ref = React.useRef(0);
+	const create_project_popup_name_ref = React.useRef(0);
+	const create_project_popup_type_ref = React.useRef(0);
+	const create_project_popup_story_ref = React.useRef(0);
+	const create_project_popup_goal_ref = React.useRef(0);
+	const create_project_popup_deadline_ref = React.useRef(0);
 	const create_pledge_popup_ref = React.useRef(0);
 	const view_project_popup_ref = React.useRef(0);
 	const view_pledge_popup_ref = React.useRef(0);
 	const add_funds_popup_ref = React.useRef(0);
 	const direct_support_popup_ref = React.useRef(0);
  
+	// BOUNDARY
+
 	const openPopupHandler = (r) =>
 	{
 		Boundary.openPopup(r.current);
@@ -32,157 +44,85 @@ function App()
 		Boundary.closePopup(r.current);
 	}
 
+	const renderHeaderHandler = () =>
+	{
+		return Boundary.renderHeader(model, openPopupHandler, logOutHandler, register_popup_ref, login_popup_ref);
+	}
+
+	const renderDashboardHandler = () =>
+	{
+		return Boundary.renderDashboard(model, openPopupHandler, create_project_popup_ref);
+	}
+
+	const renderProjectsHandler = () =>
+	{
+		return Boundary.renderProjects(model, setModel, openPopupHandler, view_project_popup_ref);
+	}
+
+	const renderPledgesHandler = () =>
+	{
+		return Boundary.renderPledges(model);
+	}
+
+	// CONTROLLER
+
 	const logInHandler = (user, pw) =>
 	{
-		Controller.logIn(model, user, pw);
+		Controller.logIn(model, user.current.value, pw.current.value);	
 		setModel(model.clone());
 	}
 
 	const logOutHandler = () =>
 	{
-		model.user = null;
+		Controller.logOut(model);
 		setModel(model.clone());
 	}
 
-	const samHandler = () =>
+	const registerHandler = (user, pw, role) =>
 	{
-		model.sam();
-		setModel(model.clone());
-	}
-	const daveHandler = () =>
-	{
-		model.dave();
-		setModel(model.clone());
-	}
-	const amyHandler = () =>
-	{
-		model.amy();
+		Controller.register(model, user.current.value, pw.current.value, role.current.value);
 		setModel(model.clone());
 	}
 
-	const renderHeader = () =>
+	const createProjectHandler = (name, type, story, goal, deadline) =>
 	{
-		if(model.user)
-		{
-			return (
-				<div className="header-user-wrapper" style={layout.header_user_wrapper}>
-					<p>{model.user.username}</p>
-					<p className="header-vertical-divider" style={layout.header_vertical_divider}>|</p>
-					<p onClick={() => logOutHandler()} style={layout.pointer}>Log Out</p>
-				</div>
-			)
-		}
-		return (
-			<div className="login-register-wrapper" style={layout.header_user_wrapper}>
-				<p onClick={() => openPopupHandler(register_popup_ref)} style={layout.pointer}>Register</p>
-				<p className="header-vertical-divider" style={layout.header_vertical_divider}>|</p>
-				<p onClick={() => openPopupHandler(login_popup_ref)} style={layout.pointer}>Log In</p>
-			</div>
-		)
+		console.log("in here")
+		Controller.createProject(model, name.current.value, type.current.value, story.current.value, goal.current.value, deadline.current.value);
+		setModel(model.clone());
 	}
 
-	const renderDashboard = () =>
+	// I HATE REACT
+
+	const sup1Handler = () =>
 	{
-		if(model.user)
-		{
-			const role = model.user.constructor.name;
-			if(role === "Admin")
-			{
-				return (
-					<div className="admin-dashboard" style={layout.admin_dashboard}>
-						<p className="dashboard-title" style={layout.dashboard_title}>Admin Dashboard</p>
-						<button className="reap-projects-button" style={layout.reap_projects_button}>Reap Projects</button>
-					</div>
-				)
-			}
-			else if(role === "Designer")
-			{
-				return (
-					<div className="designer-dashboard" style={layout.designer_dashboard}>
-						<p>Designer Dashboard</p>
-						<button onClick={() => openPopupHandler(create_project_popup_ref)}>Create Project</button>
-					</div>
-				)
-			}
-			return (
-				<div className="supporter-dashboard" style={layout.supporter_dashboard}>
-					<p>Supporter Dashboard</p>
-					<div style={{width: "90%"}}>
-						<p>{model.user.username}'s Activity:</p>
-						{renderSupporterActivity()}
-					</div>
-				</div>
-			)
-		}
+		model.sup1();
+		setModel(model.clone());
 	}
 
-	const renderSupporterActivity = () =>
+	const des1Handler = () =>
 	{
-		let ans = []
-		let i = 0;
-		let activity = sample_supporter_activity.map((act) =>
-			<li key={i++}>
-				<div className="supporter-activity-entry" style={layout.supporter_activity_entry}>
-				<p>Supported {act.project.name} ${act.amount}</p>
-				<p>Date: {act.date}</p>
-				</div>
-			</li>
-		);
-		return (
-			<ul>{activity}</ul>
-		);
+		model.des1();
+		setModel(model.clone());
 	}
 
-	const renderProjects = () =>
+	const adm1Handler = () =>
 	{
-		// TODO: figure out how to get this project to show the correct project info in popup when clicked
-		let ans = []
-		let i = 0;
-		let projects = sample_projects.map((proj) =>
-			<div key={i++} onClick={() => openPopupHandler(view_project_popup_ref)} 
-			className="project-result" style={layout.search_result}>
-				<p>Name: {proj.name}</p>
-				<p>Type: {proj.type}</p>
-				<p>Goal: ${proj.amount} / ${proj.goal}</p>
-				<p>Deadline: {proj.deadline}</p>
-			</div>
-		);
-		return projects;
+		model.adm1();
+		setModel(model.clone());
 	}
-
-	const testKey = (e) =>
-	{
-		console.log(e)
-	}
-
-	const sample_supporter_activity = [
-		{"amount": 50, "project": {"name": "pot hockets"}, "date": "01011990"},
-		{"amount": 5660, "project": {"name": "react 2"}, "date": "12252005"},
-		{"amount": 16460, "project": {"name": "ninja-se game"}, "date": "05172015"}
-	];
-
-	const sample_projects = [
-		{"name": "pot hockets", "type": "food", "amount": 40.35, "goal": 100.00, "deadline": "02232011"},
-		{"name": "react 2", "type": "software", "amount": 121.35, "goal": 200.00, "deadline": "02232011"},
-		{"name": "pimp my razor", "type": "gamer", "amount": 256.51, "goal": 300.00, "deadline": "02232011"},
-		{"name": "soccer hoop", "type": "sports", "amount": 10.65, "goal": 250.00, "deadline": "02232011"},
-		{"name": "smiley panda bear plush", "type": "toy", "amount": 44.30, "goal": 536.94, "deadline": "02232011"},
-		{"name": "python 4", "type": "programming language", "amount": 20.22, "goal": 90.03, "deadline": "02232011"},
-	]
 
 	return (
 		<main className="App" style={layout.App}>
 			<header className="header" style={layout.header}>
 				<a className="punchender-logo" style={layout.punchender_logo} href="">Punchender</a>
-				{renderHeader()}
+				{renderHeaderHandler()}
 			</header>
 			<div className="header-line" style={layout.header_line}></div>
-			<button onClick={() => samHandler()}>sup sam</button>
-			<button onClick={() => daveHandler()}>des dave</button>
-			<button onClick={() => amyHandler()}>admin amy</button>
-			
+			<button onClick={() => sup1Handler()}>sup1</button>
+			<button onClick={() => des1Handler()}>des1</button>
+			<button onClick={() => adm1Handler()}>adm1</button>
 			<div className="dashboard-wrapper" style={layout.dashboard_wrapper}>
-				{renderDashboard()}
+				{renderDashboardHandler()}
 			</div>
 
 			{/* just a div to store all of our popups, not really sure where to store these */}
@@ -194,13 +134,13 @@ function App()
 					<p>Log In</p>
 					<div>
 						<label>Username:&nbsp;</label>
-						<input type="text" placeholder="Your username..."></input>
+						<input ref={login_popup_username_ref} type="text" placeholder="Your username..."></input>
 					</div>
 					<div>
 						<label>Password:&nbsp;</label>
-						<input type="text" placeholder="Your password..."></input>
+						<input ref={login_popup_password_ref} type="text" placeholder="Your password..."></input>
 					</div>
-					<button>Log In</button>
+					<button onClick={() => logInHandler(login_popup_username_ref, login_popup_password_ref)}>Log In</button>
 				</div>
 				<div ref={register_popup_ref} className="register-popup" style={layout.register_popup}>
 					<div className="close-button" style={layout.close_button}>
@@ -209,20 +149,20 @@ function App()
 					<p>Register New User</p>
 					<div>
 						<label>Select a role:&nbsp;</label>
-						<select>
+						<select ref={register_popup_role_ref}>
 							<option value="supporter">Supporter</option>
 							<option value="designer">Designer</option>
 						</select>
 					</div>
 					<div>
 						<label>Username:&nbsp;</label>
-						<input type="text" placeholder="Your username..."></input>
+						<input ref={register_popup_username_ref} type="text" placeholder="Your username..."></input>
 					</div>
 					<div>
 						<label>Password:&nbsp;</label>
-						<input type="text" placeholder="Your password..."></input>
+						<input ref={register_popup_password_ref} type="text" placeholder="Your password..."></input>
 					</div>
-					<button>Register</button>
+					<button onClick={() => registerHandler(register_popup_username_ref, register_popup_password_ref, register_popup_role_ref)}>Register</button>
 				</div>
 				<div ref={create_project_popup_ref} className="create-project-popup" style={layout.create_project_popup}>
 					<div className="close-button" style={layout.close_button}>
@@ -231,36 +171,32 @@ function App()
 					<p>Create New Project</p>
 					<div>
 						<label>Name:&nbsp;</label>
-						<input type="text" placeholder="Project name..."></input>
+						<input ref={create_project_popup_name_ref} type="text" placeholder="Project name..."></input>
 					</div>
 					<div>
 						<label>Type:&nbsp;</label>
-						<input type="text" placeholder="Project type..."></input>
+						<input ref={create_project_popup_type_ref} type="text" placeholder="Project type..."></input>
 					</div>
 					<div>
 						<label>Story:&nbsp;</label>
-						<textarea rows="3" cols="40" maxLength="240" placeholder="Project story..." 
+						<textarea ref={create_project_popup_story_ref} rows="3" cols="40" maxLength="240" placeholder="Project story..." 
 						style={{resize: "none"}}></textarea>
 					</div>
 					<div>
 						<label>Goal ($):&nbsp;</label>
-						<input type="text" placeholder="ex: 100.00"></input>
+						<input ref={create_project_popup_goal_ref} type="text" placeholder="ex: 100.00"></input>
 					</div>
 					<div>
 						<label>Deadline:&nbsp;</label>
-						<input type="text" placeholder="MMDDYYYY"></input>
+						<input ref={create_project_popup_deadline_ref} type="text" placeholder="MMDDYYYY"></input>
 					</div>
-					<button>Create</button>
+					<button onClick={() => createProjectHandler(create_project_popup_name_ref, create_project_popup_type_ref, create_project_popup_story_ref, create_project_popup_goal_ref, create_project_popup_deadline_ref)}>Create</button>
 				</div>
 				<div ref={create_pledge_popup_ref} className="create-pledge-popup" style={layout.create_pledge_popup}>
 					<div className="close-button" style={layout.close_button}>
 						<button onClick={() => closePopupHandler(create_pledge_popup_ref)}>X</button>
 					</div>
 					<p>Create New Pledge</p>
-					<div>
-						<label>Name:&nbsp;</label>
-						<input type="text" placeholder="Pledge name..."></input>
-					</div>
 					<div>
 						<label>Amount:&nbsp;</label>
 						<input type="text" placeholder="ex: $10.00"></input>
@@ -269,42 +205,40 @@ function App()
 						<label>Reward (Optional):&nbsp;</label>
 						<input type="text" placeholder="ex: &quot;3 stickers&quot;"></input>
 					</div>
+					<div>
+						<label>Max Supporters:&nbsp;</label>
+						<input type="text" placeholder="ex: 20"></input>
+					</div>
 					<button>Create</button>
 				</div>
 				<div ref={view_project_popup_ref} className="view-project-popup" style={layout.view_project_popup}>
 					<div className="close-button" style={layout.close_button}>
 						<button onClick={() => closePopupHandler(view_project_popup_ref)}>X</button>
 					</div>
-					<p>PROJECT NAME</p>
+					<div style={{width: "100%", textAlign: "center"}}>
+						<p>{model.proj.name}</p>
+					</div>
 					<div>
 						<label>Story:&nbsp;</label>
-						<p>STORY STORY STORY STORY STORY STORY STORY STORY! STORY STORY STORY STORY 
-						STORY STORY STORY STORY STORY STORY! STORY! STORY STORY STORY STORY STORY 
-						STORY? STORY STORY STORY STORY STORY STORY STORY STORY STORY STORY STORY!!1!
-						</p>
+						<p>{model.proj.story}</p>
 					</div>	
 					<div style={{display: "flex", width: "100%"}}>
 						<div style={{display: "flex", alignItems: "baseline"}}>
 							<label>Type:&nbsp;</label>
-							<p>TYPE TYPE</p>
+							<p>{model.proj.type}</p>
 						</div>
 						<div style={{textAlign: "right", marginLeft: "auto"}}>
 							<label>Pledges:&nbsp;</label>
-							<ul style={{listStyle: "none"}}>
-								<li>(#SUPP) <button>O</button> I am a pledge for money</li>
-								<li>(#SUPP) <button>O</button> I am a pledge for money</li>
-								<li>(#SUPP) <button>O</button> I am a pledge for money</li>
-								<li>(#SUPP) <button>O</button> I am a pledge for money</li>
-							</ul>
+							{renderPledgesHandler()}
 							<button onClick={() => openPopupHandler(create_pledge_popup_ref)}>Add Pledge</button>
 						</div>
 					</div>
 					<div>
 						<label>Goal:&nbsp;</label>
-						<p>$AMOUNT / $GOAL</p>
+						<p>${model.proj.amount} / ${model.proj.goal}</p>
 					</div>
 					<div style={{width: "100%", textAlign: "right"}}	>
-						<p>Deadline: MMDDYYYY</p>
+						<p>Deadline: {model.proj.deadline}</p>
 						<div style={{alignItems: "flex-end"}}>
 							<button>Delete Project</button>
 							<button onClick={() => openPopupHandler(direct_support_popup_ref)}>Direct Support</button>
@@ -358,7 +292,7 @@ function App()
 			</div>
 			<div className="search-projects-wrapper" style={layout.search_projects_wrapper}>
 				<input className="search-projects-bar" type="text" placeholder="Search Projects..." style={layout.search_projects_bar}></input>
-				{renderProjects()}
+				{renderProjectsHandler()}
 			</div>
 		</main>
 	);

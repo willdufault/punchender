@@ -1,6 +1,7 @@
 import { Supporter } from "./Supporter";
 import { Designer } from "./Designer";
 import { Admin } from "./Admin";
+import { Database } from "./Database";
 
 export class Model
 {
@@ -11,27 +12,32 @@ export class Model
 		//// this.designers = [];  // list of all designers (list(Designer))
 		//// this.supportes = [];  // list of all supporters (list(Supporter))
 		this.user = null;  // current user (Admin, Designer, or Supporter)
+		this.proj = {};
+		this.search = "";
+		this.db = new Database();
 	}
 
 	clone()
 	{
 		const m = new Model();
 		m.user = this.user;
+		m.proj = this.proj;
+		m.db = this.db;
 		return m;
 	}
 
-	sam()
+	sup1()
 	{
-		this.user = new Supporter("sam");
+		this.user = new Supporter("sup1");
 	}
 
-	dave()
+	des1()
 	{
-		this.user = new Designer("dave");
+		this.user = new Designer("des1");
 	}
 
-	amy()
+	adm1()
 	{
-		this.user = new Admin("amy");
+		this.user = new Admin("adm1");
 	}
 }

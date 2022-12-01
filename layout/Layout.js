@@ -158,6 +158,41 @@ export const layout =
 
 	// TODO: popups have a lot of repeated code, make a popup class that contains all repeated code
 
+	popup_center:
+	{
+		position: "fixed",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",	
+		width: "fit-content",
+	},
+
+	popup_left:
+	{
+		position: "fixed",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "flex-start",
+		width: "fit-content",
+	},
+
+
+
+
 	// popups:
 	login_popup:
 	{
