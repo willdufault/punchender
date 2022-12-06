@@ -1,145 +1,251 @@
-import { Designer } from "../model/Designer";
-import { Supporter } from "../model/Supporter";
-import { Admin } from "../model/Admin";
-import { Project } from "../model/Project";
+import axios from "axios";
 
-var base_url = "https://g6kz80jtk5.execute-api.us-east-1.amazonaws.com/Prod/";
+var instance = axios.create({
+	baseURL: "https://4q26r3x548.execute-api.us-east-1.amazonaws.com/Prod/"
+});
 
 export class Controller
 {
-	static logIn(model, user, pw)
+	static logIn(model, user)
 	{
-		for(let i = 0; i < model.db.users.length; i++)
+		return new Promise((resolve, reject) =>
 		{
-			let cur = model.db.users[i];
-			if((cur.username === user) && (cur.password === pw))
+			instance.post('/LogIn',
 			{
-				switch(cur.role)
+				"username": user,
+			})
+			.then(function(response)
+			{
+				// console.log(response)
+				let info = response.data;
+				if(info.statusCode === 200)
 				{
-					case "admin":
-						model.user = new Admin(user, pw);
-						break;
-					case "designer":
-						model.user = new Designer(user, pw);
-						break;
-					case "supporter":
-						model.user = new Supporter(user, pw);
-						break;
+					switch(info.body.role)
+					{
+						case "admin":
+							model.adminLogIn(info.body.username)
+							break;
+						case "designer":
+							model.designerLogIn(info.body.username);
+							break;
+						case "supporter":
+							model.supporterLogIn(info.body.username);
+							break;
+					}
+					alert(`welcome, ${info.body.username} (${info.body.role})!`);
+					resolve(true);
 				}
-				alert("successfully logged in.");
-				return;
-			}
-		}
-		alert("incorrect login information.");
-	}
-
-	static logOut(model)
-	{
-		model.user = null;
-	}
-
-	static register(model, user, pw, role)
-	{
-<<<<<<< HEAD
-		let data =
-		{
-			"username": user,
-			"password": pw,
-			"role": role
-		};
-		let body = JSON.stringify(data);
-		let xhr = new XMLHttpRequest();
-		let add_url = (base_url + "register");
-		xhr.open("POST", add_url, true);
-		xhr.send(body);
-		xhr.onloadend = function () {
-		if (xhr.readyState === XMLHttpRequest.DONE)
-		{
-			// console.log(JSON.parse(xhr.response).statusCode)
-			let code = JSON.parse(xhr.response).statusCode
-			if(code === 200)
+				else
+				{
+					alert("login failed.");
+					resolve(false);
+				}
+			})
+			.catch(function (error)
 			{
-				console.log(code)
-				alert("successfully registered.");
-			}
-			else
-			{
-				alert("cannot register. there is already a user with that name.");
-=======
-		let data = {};
-		data["username"] = user;
-		data["password"] = pw;
-		
-		console.log(user)
-		console.log(pw)
-
-	
-		let add_url = base_url + "designer"
-		console.log(data)
-
-		let body = JSON.stringify(data);
-		
-		console.log(body)
-
-		let xhr = new XMLHttpRequest();
-		xhr.open("POST", add_url, true);
-		
-		// var body2 = {
-		// 	"body": body
-		// }
-
-		// var body3 = JSON.stringify(body2);
-
-		// var body2 = {
-		// 	"body": "{\n    \"username\": \"yoyo4\",\n    \"password\": \"yoyo4\"\n}"
-		//   };
-		// console.log(body3)
-		xhr.send(body);
-
-		xhr.onloadend = function () {
-			if (xhr.readyState === XMLHttpRequest.DONE) {
-				// let response =  JSON.parse(xhr.body);
-				console.log(JSON.parse(xhr.response).statusCode)
-				let code = JSON.parse(xhr.response).statusCode
-				if(code === 200){
-					console.log(code)
-					alert("successfully registered.");
-				}
-				else {
-					alert("cannot register. there is already a user with that name.");
-				}
->>>>>>> c6ab98802366dbdadd3bde7d3af998c10e234666
-			}
-			else {
-				alert("Error: " + xhr.response.statusCode);
-			}
-			console.log(xhr.response)
-		}
-<<<<<<< HEAD
-		else
-		{
-			alert("Error: " + xhr.response.statusCode);
-		}
-		console.log(xhr.response)
-		}
-=======
-
-		// for(let i = 0; i < model.db.users.length; i++)
-		// {
-		// 	let cur = model.db.users[i];
-		// 	if(cur.username === user)
-		// 	{
-		// 		alert("cannot register. there is already a user with that name.");
-		// 		return;
-		// 	}
-		// }
-		// got through without issues
-		// model.db.users.push({"username": user, "password": pw, "role": role});
-		// alert("successfully registered.");
->>>>>>> c6ab98802366dbdadd3bde7d3af998c10e234666
+				console.log(error);
+				reject(error);
+			});
+		});
 	}
 
-	static fetchSupporterActivity(model)
+	static logOut(model, redrawPage)
+	{
+		model.logOut();
+	}
+
+	static register(user, role)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/Register',
+			{
+				"username": user,
+				"role": role
+			})
+			.then(function(response)
+			{
+				// console.log(response)
+				let info = response.data;
+				if(info.statusCode === 200)
+				{
+					alert("successfully registered");
+					resolve(true);
+				}
+				else
+				{
+					alert("failed to register.");
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static createProject(model, name, type, story, goal, deadline)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/Project',
+			{
+				"creator": model.user.username,
+				"name": name,
+				"type": type,
+				"story": story,
+				"goal": goal,
+				"deadline": deadline
+			})
+			.then(function(response)
+			{
+				console.log(response)
+				let info = response.data;
+				if(info.statusCode === 200)
+				{
+					alert(`successfully added project \"${name}\"`);
+					resolve(true);
+				}
+				else
+				{
+					alert(`failed to add project \"${name}\".`);
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static deleteProject(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/DeleteProject',
+			{
+				"projectID": model.cur_proj.projectID
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				if(info.statusCode === 200)
+				{
+					alert(`project \"${model.cur_proj.name}\" successfully deleted.`);
+					resolve(true);
+				}
+				else
+				{
+					alert("failed to delete project \"${model.cur_proj.name}\".")
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static searchProjects(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/Search',
+			{
+				"by": model.by,
+				"search": model.search
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				console.log(info)
+				if(info.statusCode === 200)
+				{
+					model.projects = info.body;
+					resolve(true);
+				}
+				else
+				{
+					alert("somehow, search projects failed... idk")
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static reviewSupporterActivity(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			// TODO
+			instance.post('/',
+			{
+				"username": model.user.username
+			})
+			.then(function(response)
+			{
+				model.supp_activity = response.data.body;
+				resolve(true);
+			})
+			.catch(function(error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});	
+	}
+
+	static directSupport(model, amt)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/directsupport',
+			{
+				"username": model.user.username,
+				"amount": amt,
+				"projectID": model.cur_proj.projectID
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				console.log(info)
+				// model.supp_activity = response.data.body;
+				if(info.statusCode === 200)
+				{
+					alert("successfully added funds.");
+					resolve(true);
+				}
+				else
+				{
+					alert("failed to add funds.");
+					resolve(false);
+				}
+			})
+			.catch(function(error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});	
+	}
+
+
+
+
+	// fake fetch functions
+
+	static fetchSupporterActivity1(model)
 	{
 		const ans = [];
 		for(let i = 0; i < model.db.past_support.length; i++)
@@ -211,44 +317,6 @@ export class Controller
 		for(let i = 0; i < this.db.past_support.length; i++)
 		{
 
-		}
-	}
-
-	static createProject(model, name, type, story, goal, deadline)
-	{
-		let data =
-		{
-			"name": name,
-			"type": type,
-			"story": story,
-			"goal": goal,
-			"deadline": deadline
-		};
-		let body = JSON.stringify(data);
-		let xhr = new XMLHttpRequest();
-		let add_url = base_url + "project"
-		xhr.open("POST", add_url, true);
-		xhr.send(body);
-		xhr.onloadend = function () {
-		let info = JSON.parse(xhr.response)
-		if(xhr.readyState === XMLHttpRequest.DONE) 
-		{
-			console.log(JSON.parse(xhr.response).statusCode);
-			if(info.code === 200)
-			{
-				console.log(info.code);
-				alert("successfully registered.");
-			}
-			else
-			{
-				alert("error occurred. cannot create project.");
-			}
-		}
-		else
-		{
-			alert("Error: " + info.statusCode);
-		}
-		console.log(xhr);
 		}
 	}
 

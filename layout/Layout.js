@@ -6,7 +6,7 @@ export const layout =
 		paddingBottom: 1,
 		boxSizing: "border-box",
 		width: "100%",
-		height: "100%",
+		minHeight: "100vh",
 		background: "#191919"
 	},
 
@@ -179,6 +179,7 @@ export const layout =
 		position: "fixed",
 		top: "50%",
 		left: "50%",
+		minWidth: "50vw",
 		transform: "translate(-50%, -50%)",
 		padding: "1%",
 		border: "2px solid purple",
@@ -189,8 +190,6 @@ export const layout =
 		alignItems: "flex-start",
 		width: "fit-content",
 	},
-
-
 
 
 	// popups:
@@ -268,6 +267,7 @@ export const layout =
 		position: "fixed",
 		top: "50%",
 		left: "50%",
+		minWidth: "40%", 
 		transform: "translate(-50%, -50%)",
 		padding: "1%",
 		border: "2px solid purple",
@@ -315,6 +315,23 @@ export const layout =
 	},
 
 	direct_support_popup:
+	{
+		position: "fixed",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		padding: "1%",
+		border: "2px solid purple",
+		background: "#bbb",
+		display: "flex",
+		gap: 10,
+		flexDirection: "column",
+		alignItems: "center",
+		width: "fit-content",
+		display: "none"  // hidden by default
+	},
+
+	view_pledge_popup:
 	{
 		position: "fixed",
 		top: "50%",

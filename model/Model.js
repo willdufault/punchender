@@ -7,37 +7,38 @@ export class Model
 {
 	constructor()
 	{
-		//// this.projects = [];  // list of all projects (list(Project))
-		//// this.admins = [];  // list of all admins (list(Admin))
-		//// this.designers = [];  // list of all designers (list(Designer))
-		//// this.supportes = [];  // list of all supporters (list(Supporter))
 		this.user = null;  // current user (Admin, Designer, or Supporter)
-		this.proj = {};
+		this.cur_proj = {};
+		this.cur_pl = {};
+		this.projects = [];
 		this.search = "";
+		this.by = "name";  // search by this
+		this.supp_activity = [];
 		this.db = new Database();
 	}
 
-	clone()
+	adminLogIn(user)
 	{
-		const m = new Model();
-		m.user = this.user;
-		m.proj = this.proj;
-		m.db = this.db;
-		return m;
+		this.user = new Admin(user);
 	}
 
-	sup1()
+	designerLogIn(user)
 	{
-		this.user = new Supporter("sup1");
+		this.user = new Designer(user);
 	}
 
-	des1()
+	supporterLogIn(user)
 	{
-		this.user = new Designer("des1");
+		this.user = new Supporter(user);
 	}
 
-	adm1()
+	logOut()
 	{
-		this.user = new Admin("adm1");
+		this.user = null;
+	}
+
+	updateSearch(s)
+	{
+		this.search = s;
 	}
 }
