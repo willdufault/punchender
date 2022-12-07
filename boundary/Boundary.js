@@ -106,16 +106,18 @@ export class Boundary
 			if(act.pledgeID)
 			{
 				return (
-					<p>Claimed {Controller.fetchProject(model, act.projectID).name}'s {Controller.fetchPledge(model, act.pledgeID).reward} for ${act.amount}</p>
+					// called pledge name, supposed to be reward
+					<p>Claimed {act.project_name}'s {act.pledge_name} for ${act.amount}</p>
 				)
 			}
 			// project
 			return (
-				<p>Supported {Controller.fetchProject(model, act.projectID).name} for ${act.amount}</p>
+				<p>Supported {act.project_name} for ${act.amount}</p>
 			)
 		}
 
 		let i = 0;	
+		
 		let activity = model.supp_activity.map((act) =>
 			<li key={i++}>
 				<div className="supporter-activity-entry" style={layout.supporter_activity_entry}>

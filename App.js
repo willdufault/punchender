@@ -43,6 +43,7 @@ function App()
 	let create_pledge_popup_amount_ref = React.useRef(0);
 	let create_pledge_popup_reward_ref = React.useRef(0);
 	let create_pledge_popup_max_ref = React.useRef(0);
+	let view_pledge_popup_amount_ref = React.useRef(0);
 
 	// BOUNDARY
 
@@ -75,7 +76,7 @@ function App()
 
 	const renderPledgesHandler = () =>
 	{
-		console.log("re-rendering pledges")
+		// console.log("re-rendering pledges")
 		return Boundary.renderPledges(model, openPopupHandler, view_pledge_popup_ref, redrawPage);
 	}
 
@@ -140,6 +141,16 @@ function App()
 	const directSupportHandler = async (amt) =>
 	{
 		await Controller.directSupport(model, amt.current.value);
+		redrawPage();
+	}
+
+	// TODO: could have a function that updates cur_proj in model by search for that prid
+	const claimPledgeHandler = async (amt) =>
+	{
+		await Controller.claimPledge(model, amt.current.value);
+		redrawPage();
+		model.updateCurProj();
+		model.updateCurPl();
 		redrawPage();
 	}
 
@@ -244,7 +255,7 @@ function App()
 					<p>Create New Pledge</p>
 					<div>
 						<label>Amount:&nbsp;</label>
-						<input ref={create_pledge_popup_amount_ref} type="text" placeholder="ex: $10.00"></input>
+						<input ref={create_pledge_popup_amount_ref} type="text" placeholder="ex: 10.00"></input>
 					</div>
 					<div>
 						<label>Reward (Optional):&nbsp;</label>
@@ -280,6 +291,8 @@ function App()
 							<label>Pledges:&nbsp;</label>
 							{renderPledgesHandler()}
 							<button onClick={() => openPopupHandler(create_pledge_popup_ref)}>Add Pledge</button>
+							{/* //TODO: this sucks */}
+							<p>(Refresh to update.)</p>
 						</div>
 					</div>
 					<div>
@@ -306,9 +319,14 @@ function App()
 						<p>{model.cur_pl.reward}</p>
 					</div>
 					<div style={{ display: "flex", alignItems: "center" }}>
-						<label>Max Supporters:&nbsp;</label>
-						<p>{model.cur_pl.curSupporter} / {model.cur_pl.maxSupporter}</p>
+						<label>Supporters:&nbsp;</label>
+						<p>{model.cur_pl.curSupporters} / {model.cur_pl.maxSupporter}</p>
 					</div>
+					<div style={{ display: "flex", alignItems: "center" }}>
+						<label>Amount ($):&nbsp;</label>
+						<input ref={view_pledge_popup_amount_ref} type="text" placeholder="ex: 20"></input>
+					</div>
+					<button onClick={() => claimPledgeHandler(view_pledge_popup_amount_ref)}>Claim Pledge</button>
 				</div>
 
 
@@ -324,7 +342,7 @@ function App()
 					</div>
 					<div>
 						<label>Amount to add ($):&nbsp;</label>
-						<input type="text" placeholder="ex: $100.00"></input>
+						<input type="text" placeholder="ex: 100.00"></input>
 					</div>
 					<button>Add</button>
 				</div>
@@ -342,7 +360,7 @@ function App()
 					</div>
 					<div>
 						<label>Amount to add ($):&nbsp;</label>
-						<input ref={direct_support_popup_amount_ref} type="text" placeholder="ex: $100.00"></input>
+						<input ref={direct_support_popup_amount_ref} type="text" placeholder="ex: 100.00"></input>
 					</div>
 					<button onClick={() => directSupportHandler(direct_support_popup_amount_ref)}>Add</button>
 				</div>	

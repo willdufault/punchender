@@ -41,4 +41,30 @@ export class Model
 	{
 		this.search = s;
 	}
+
+	updateCurProj()
+	{
+		let id = this.cur_proj.projectID;
+		for(let i = 0; i < this.projects.length; i++)
+		{
+			if(this.projects[i].projectID === id)
+			{
+				this.cur_proj = this.projects[i];
+				return;
+			}
+		}
+	}
+
+	updateCurPl()
+	{
+		let id = this.cur_pl.pledgeID;
+		for(let i = 0; i < this.projects.pledge.length; i++)
+		{
+			if(this.projects.pledges[i].pledgeID === id)
+			{
+				this.cur_pl = this.projects.pledges[i];
+				return;
+			}
+		}
+	}
 }

@@ -330,21 +330,4 @@ export const layout =
 		width: "fit-content",
 		display: "none"  // hidden by default
 	},
-
-	view_pledge_popup:
-	{
-		position: "fixed",
-		top: "50%",
-		left: "50%",
-		transform: "translate(-50%, -50%)",
-		padding: "1%",
-		border: "2px solid purple",
-		background: "#bbb",
-		display: "flex",
-		gap: 10,
-		flexDirection: "column",
-		alignItems: "center",
-		width: "fit-content",
-		display: "none"  // hidden by default
-	}
 }; 	

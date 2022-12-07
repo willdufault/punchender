@@ -105,7 +105,7 @@ export class Controller
 				let info = response.data;
 				if(info.statusCode === 200)
 				{
-					alert(`successfully added project \"${name}\"`);
+					alert("successfully added project \"${name}\"");
 					resolve(true);
 				}
 				else
@@ -122,9 +122,10 @@ export class Controller
 		});
 	}
 
+	// TODO: could manually add pledge to model, this idea sucks
 	static createPledge(model, amt, reward, max)
 	{
-		console.log(model.cur_proj.projectID, amt, reward, max)
+		// console.log(model.cur_proj.projectID, amt, reward, max)
 		return new Promise((resolve, reject) =>
 		{
 			instance.post('/Pledge',
@@ -141,12 +142,47 @@ export class Controller
 				console.log("this is info:", info)
 				if(info.statusCode === 200)
 				{
-					alert(`successfully added pledge`);
+					alert("successfully added pledge");
 					resolve(true);
 				}
 				else
 				{
-					alert(`failed to add pledge.`);
+					alert("failed to add pledge.");
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static claimPledge(model, amt)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/ClaimPledge',
+			{
+				"pledgeID": model.cur_pl.pledgeID,
+				"projectID": model.cur_proj.projectID,
+				"pay": amt,
+				"username": model.user.username
+			})
+			.then(function(response)
+			{
+				console.log(response)
+				let info = response.data;
+				console.log("this is info:", info)
+				if(info.statusCode === 200)
+				{
+					alert(`you claimed this pledge! (refresh to update)`);
+					resolve(true);
+				}
+				else
+				{
+					alert(`claim pledge failed.`);
 					resolve(false);
 				}
 			})
@@ -224,14 +260,16 @@ export class Controller
 	{
 		return new Promise((resolve, reject) =>
 		{
+			console.log(model.user.username)
 			// TODO
-			instance.post('/',
+			instance.post('/ReviewSupporterActivity',
 			{
-				"username": model.user.username
+				"supporter": model.user.username
 			})
 			.then(function(response)
 			{
 				model.supp_activity = response.data.body;
+				console.log(response)
 				resolve(true);
 			})
 			.catch(function(error)
