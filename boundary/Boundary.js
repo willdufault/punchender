@@ -85,6 +85,8 @@ export class Boundary
 					document.getElementById('directSupportID').style.display = 'none';
 					document.getElementById('searchProjectsID').style.display = 'none';
 					document.getElementById('searchByID').style.display = 'none';
+					document.getElementById('claimPledgeID').style.display = 'none';
+					document.getElementById('deletePledgeID').style.display = 'inline-block';
 
 					return (
 						<div className="designer-dashboard" style={layout.designer_dashboard}>
@@ -102,6 +104,8 @@ export class Boundary
 					document.getElementById('directSupportID').style.display = 'inline-block';
 					document.getElementById('searchProjectsID').style.display = 'inline-block';
 					document.getElementById('searchByID').style.display = 'inline-block';
+					document.getElementById('claimPledgeID').style.display = 'inline-block';
+					document.getElementById('deletePledgeID').style.display = 'none';
 					return (
 						<div className="supporter-dashboard" style={layout.supporter_dashboard}>
 							<p>Supporter Dashboard</p>

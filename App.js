@@ -362,8 +362,8 @@ function App()
 						<label>Amount ($):&nbsp;</label>
 						<input ref={view_pledge_popup_amount_ref} type="text" placeholder="ex: 20"></input>
 					</div>
-					<button onClick={() => claimPledgeHandler(view_pledge_popup_amount_ref)}>Claim Pledge</button>
-					<button onClick={() => deletePledgeHandler(view_pledge_popup_ref)}>Delete Pledge</button>
+					<button onClick={() => claimPledgeHandler(view_pledge_popup_amount_ref)} style={{display : "none"}} id = "claimPledgeID">Claim Pledge</button>
+					<button onClick={() => deletePledgeHandler(view_pledge_popup_ref)} style={{display : "none"}} id = "deletePledgeID">Delete Pledge</button>
 				</div>
 
 
