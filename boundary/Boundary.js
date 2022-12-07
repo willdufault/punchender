@@ -34,7 +34,7 @@ export class Boundary
 		)
 	}
 
-	static renderDashboard(model, openPopupHandler, create_project_popup_ref, redrawPage)
+	static renderDashboard(model, openPopupHandler, create_project_popup_ref, add_funds_popup_ref, redrawPage)
 	{
 		
 		const updateSupporterActivity = async () =>
@@ -43,19 +43,23 @@ export class Boundary
 			redrawPage();
 		}
 
+
 		const designerListHandler = async () =>
 		{
-			model.search = model.user.username;
-			model.by = "creator";
-			await Controller.searchProjects(model);
+			await Controller.dList(model);
 			redrawPage();
 		}
 
 		const adminListHandler = async () =>
 		{
-			model.search = "";
-			model.by = "name";
-			await Controller.searchProjects(model);
+			await Controller.aList(model);
+			redrawPage();
+		}
+
+		const reapHandler = async () =>
+		{
+			await Controller.reap(model);
+			await Controller.aList(model);
 			redrawPage();
 		}
 
@@ -69,7 +73,7 @@ export class Boundary
 						<div className="admin-dashboard" style={layout.admin_dashboard}>
 							<p className="dashboard-title" style={layout.dashboard_title}>Admin Dashboard</p>
 							<div style={{width: "100%", display: "flex", justifyContent: "center", gap: "3%"}}>
-								<button className="reap-projects-button" style={layout.reap_projects_button}>Reap Projects</button>
+								<button onClick={() => reapHandler()} style={layout.reap_projects_button}>Reap Projects</button>
 								<button onClick={() => adminListHandler()}>List All Projects</button>
 							</div>
 						</div>
@@ -92,6 +96,10 @@ export class Boundary
 								<p>{model.user.username}'s Activity:</p>
 								{this.renderSupporterActivity(model)}
 								<button onClick={() => updateSupporterActivity()}>Review Supporter Activity</button>
+							</div>
+							<div style={{width: "90%"}}>
+								<p>Current Balance: {model.user.balance} (CURRENTLY NEED TO REFRESH PAGE TO UPDATE, FIX THIS)</p>
+								<button onClick={() => openPopupHandler(add_funds_popup_ref)}>Add Funds</button>
 							</div>
 						</div>
 					);
@@ -117,8 +125,8 @@ export class Boundary
 		}
 
 		let i = 0;	
-		
-		let activity = model.supp_activity.map((act) =>
+		let tmp = (model.supp_activity ? model.supp_activity : []);
+		let activity = tmp.map((act) =>
 			<li key={i++}>
 				<div className="supporter-activity-entry" style={layout.supporter_activity_entry}>
 				{renderAct(act)}

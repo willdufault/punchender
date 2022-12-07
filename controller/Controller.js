@@ -29,7 +29,7 @@ export class Controller
 							model.designerLogIn(info.body.username);
 							break;
 						case "supporter":
-							model.supporterLogIn(info.body.username);
+							model.supporterLogIn(info.body.username, info.body.budget);
 							break;
 					}
 					alert(`welcome, ${info.body.username} (${info.body.role})!`);
@@ -122,7 +122,40 @@ export class Controller
 		});
 	}
 
-	// TODO: could manually add pledge to model, this idea sucks
+	static addFunds(model, amt)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/AddFunds',
+			{
+				"username": model.user.username,
+				"amount": amt
+			})
+			.then(function(response)
+			{
+				console.log(response)
+				let info = response.data;
+				console.log("this is info:", info)
+				if(info.statusCode === 200)
+				{
+					// TODO: fix refresh page to update
+					alert("successfully added funds (refresh page to update).");
+					resolve(true);
+				}
+				else
+				{
+					alert("failed to add funds.");
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
 	static createPledge(model, amt, reward, max)
 	{
 		// console.log(model.cur_proj.projectID, amt, reward, max)
@@ -245,6 +278,95 @@ export class Controller
 				else
 				{
 					alert("somehow, search projects failed... idk")
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static dList(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/dList',
+			{
+				"username": model.user.username
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				console.log(info)
+				if(info.statusCode === 200)
+				{
+					model.projects = info.body;
+					resolve(true);
+				}
+				else
+				{
+					alert("somehow, dList failed... idk")
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static aList(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/aList',
+			{})
+			.then(function(response)
+			{
+				let info = response.data;
+				console.log(info)
+				if(info.statusCode === 200)
+				{
+					model.projects = info.body;
+					resolve(true);
+				}
+				else
+				{
+					alert("somehow, aList failed... idk")
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static reap(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/Reap',
+			{})
+			.then(function(response)
+			{
+				let info = response.data;
+				console.log(info)
+				if(info.statusCode === 200)
+				{
+					alert("succesfully reaped old projects.")
+					resolve(true);
+				}
+				else
+				{
+					alert("no old projects to reap.")
 					resolve(false);
 				}
 			})

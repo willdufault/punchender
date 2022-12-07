@@ -27,9 +27,9 @@ export class Model
 		this.user = new Designer(user);
 	}
 
-	supporterLogIn(user)
+	supporterLogIn(user, bal)
 	{
-		this.user = new Supporter(user);
+		this.user = new Supporter(user, bal);
 	}
 
 	logOut()

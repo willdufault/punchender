@@ -36,6 +36,7 @@ function App()
 	let view_project_popup_ref = React.useRef(0);
 	let view_pledge_popup_ref = React.useRef(0);
 	let add_funds_popup_ref = React.useRef(0);
+	let add_funds_popup_amount_ref = React.useRef(0);
 	let direct_support_popup_ref = React.useRef(0);
 	let search_projects_input_ref = React.useRef(0);
 	let search_projects_field_ref = React.useRef(0);
@@ -66,7 +67,7 @@ function App()
 
 	const renderDashboardHandler = () =>
 	{
-		return Boundary.renderDashboard(model, openPopupHandler, create_project_popup_ref, redrawPage);
+		return Boundary.renderDashboard(model, openPopupHandler, create_project_popup_ref, add_funds_popup_ref, redrawPage);
 	}
 
 	const renderProjectsHandler = () =>
@@ -88,9 +89,10 @@ function App()
 		redrawPage();
 	}
 
-	const logOutHandler = () =>
+	const logOutHandler = async () =>
 	{
 		Controller.logOut(model, redrawPage);
+		await Controller.searchProjects(model);
 		redrawPage();
 	}
 
@@ -167,6 +169,12 @@ function App()
 		model.updateCurProj();
 		model.updateCurPl();
 		closePopupHandler(r);
+		redrawPage();
+	}
+
+	const addFundsHandler = async (r) =>
+	{
+		await Controller.addFunds(model, r.current.value);
 		redrawPage();
 	}
 
@@ -353,13 +361,13 @@ function App()
 					<p>Add Funds</p>
 					<div style={{ display: "flex", alignItems: "flex-start" }}>
 						<label>Balance ($):&nbsp;</label>
-						<p style={{ margin: 0 }}>$BALANCE</p>
+						<p style={{ margin: 0 }}>${(model.user ? model.user.balance : 0)}</p>
 					</div>
 					<div>
 						<label>Amount to add ($):&nbsp;</label>
-						<input type="text" placeholder="ex: 100.00"></input>
+						<input ref={add_funds_popup_amount_ref} type="text" placeholder="ex: 100.00"></input>
 					</div>
-					<button>Add</button>
+					<button onClick={() => addFundsHandler(add_funds_popup_amount_ref)}>Add</button>
 				</div>
 
 
