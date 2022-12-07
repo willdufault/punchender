@@ -91,6 +91,10 @@ function App()
 
 	const logOutHandler = async () =>
 	{
+		
+		
+		document.getElementById('searchProjectsID').style.display = 'none';
+		document.getElementById('searchByID').style.display = 'none';
 		Controller.logOut(model, redrawPage);
 		await Controller.searchProjects(model);
 		redrawPage();
@@ -323,7 +327,7 @@ function App()
 						<div style={{ textAlign: "right", marginLeft: "auto" }}>
 							<label>Pledges:&nbsp;</label>
 							{renderPledgesHandler()}
-							<button onClick={() => openPopupHandler(create_pledge_popup_ref)}>Add Pledge</button>
+							<button onClick={() => openPopupHandler(create_pledge_popup_ref)} style={{display : "none"}} id = "createPledgeID">Add Pledge</button>
 						</div>
 					</div>
 					<div>
@@ -333,9 +337,9 @@ function App()
 					<div style={{ width: "100%", textAlign: "right" }}>
 						<p>Deadline: {parseDeadline(model.cur_proj.deadline)}</p>
 						<div style={{ alignItems: "flex-end" }}>
-							<button onClick={() => launchProjectHandler()}>Launch Project</button>
-							<button onClick={() => deleteProjectHandler(view_project_popup_ref)}>Delete Project</button>
-							<button onClick={() => openPopupHandler(direct_support_popup_ref)}>Direct Support</button>
+							<button onClick={() => launchProjectHandler()} style={{display : "none"}} id = "launchProjectID">Launch Project</button>
+							<button onClick={() => deleteProjectHandler(view_project_popup_ref)} style={{display : "none"}} id = "deleteProjectID">Delete Project</button>
+							<button onClick={() => openPopupHandler(direct_support_popup_ref)} style={{display : "none"}} id = "directSupportID">Direct Support</button>
 						</div>
 					</div>
 				</div>
@@ -400,13 +404,12 @@ function App()
 			</div>
 
 
-
 			<div className="search-projects-wrapper" style={layout.search_projects_wrapper}>
 				<input ref={search_projects_input_ref} className="search-projects-bar" type="text" 
-				placeholder="Search Projects..." 
+				placeholder="Search Projects..."  id = "searchProjectsID"
 				onKeyDown={(e) => updateSearchHandler(e, search_projects_input_ref, search_projects_field_ref)} style={layout.search_projects_bar}></input>
 				<div style={{width: "100%"}}>
-					<select ref={search_projects_field_ref} className="search-projects-field" >
+					<select ref={search_projects_field_ref} className="search-projects-field" style={{display : "none"}} id = "searchByID">
 						<option value="name">Project Name</option>
 						<option value="type">Type/Genre</option>
 						<option value="creator">Creator</option>

@@ -79,6 +79,13 @@ export class Boundary
 						</div>
 					);
 				case "designer":
+					document.getElementById('createPledgeID').style.display = 'inline-block';
+					document.getElementById('launchProjectID').style.display = 'inline-block';
+					document.getElementById('deleteProjectID').style.display = 'inline-block';
+					document.getElementById('directSupportID').style.display = 'none';
+					document.getElementById('searchProjectsID').style.display = 'none';
+					document.getElementById('searchByID').style.display = 'none';
+
 					return (
 						<div className="designer-dashboard" style={layout.designer_dashboard}>
 							<p>Designer Dashboard</p>
@@ -89,6 +96,12 @@ export class Boundary
 						</div>
 					);
 				case "supporter":
+					document.getElementById('createPledgeID').style.display = 'none';
+					document.getElementById('launchProjectID').style.display = 'none';
+					document.getElementById('deleteProjectID').style.display = 'none';
+					document.getElementById('directSupportID').style.display = 'inline-block';
+					document.getElementById('searchProjectsID').style.display = 'inline-block';
+					document.getElementById('searchByID').style.display = 'inline-block';
 					return (
 						<div className="supporter-dashboard" style={layout.supporter_dashboard}>
 							<p>Supporter Dashboard</p>
@@ -104,6 +117,9 @@ export class Boundary
 						</div>
 					);
 			}	
+		} else {
+			
+			model.projects.splice(0, model.projects.length);
 		}
 	}
 

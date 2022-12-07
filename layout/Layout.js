@@ -71,7 +71,8 @@ export const layout =
 		height: 60,
 		width: "calc(100% - 20px)",
 		padding: "0 10px",
-		margin: "0 0 1%"
+		margin: "0 0 1%",
+		display : "none"
 	},
 
 	projects_list_wrapper:
