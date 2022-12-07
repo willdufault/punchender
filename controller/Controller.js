@@ -420,7 +420,7 @@ export class Controller
 			.then(function(response)
 			{
 				model.supp_activity = response.data.body;
-				console.log(response)
+				console.log("supp act=", response)
 				resolve(true);
 			})
 			.catch(function(error)
