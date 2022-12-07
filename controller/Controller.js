@@ -122,6 +122,42 @@ export class Controller
 		});
 	}
 
+	static createPledge(model, amt, reward, max)
+	{
+		console.log(model.cur_proj.projectID, amt, reward, max)
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/Pledge',
+			{
+				"projectID": model.cur_proj.projectID,
+				"amount": amt,
+				"reward": reward,
+				"maxSupporter": max
+			})
+			.then(function(response)
+			{
+				console.log(response)
+				let info = response.data;
+				console.log("this is info:", info)
+				if(info.statusCode === 200)
+				{
+					alert(`successfully added pledge`);
+					resolve(true);
+				}
+				else
+				{
+					alert(`failed to add pledge.`);
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
 	static deleteProject(model)
 	{
 		return new Promise((resolve, reject) =>

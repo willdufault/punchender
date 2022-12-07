@@ -3,19 +3,16 @@ import { layout } from "./layout/Layout.js";
 import { Model } from "./model/Model.js";
 import { Boundary } from "./boundary/Boundary.js";
 import { Controller } from "./controller/Controller.js";
-import { useResolvedPath } from "react-router-dom";
 
 function App()
 {
-	//! might need to make this React.useState(new Model())
 	let [model] = React.useState(new Model());
 	let [redraw, forceRedraw] = React.useState(1);
 
 	React.useEffect(() =>
 	{
 		console.log("redraw");
-	//! might need to include model here
-	}, [redraw]);
+	}, [model,redraw]);
 
 	const redrawPage = () =>
 	{
@@ -43,6 +40,9 @@ function App()
 	let search_projects_input_ref = React.useRef(0);
 	let search_projects_field_ref = React.useRef(0);
 	let direct_support_popup_amount_ref = React.useRef(0);
+	let create_pledge_popup_amount_ref = React.useRef(0);
+	let create_pledge_popup_reward_ref = React.useRef(0);
+	let create_pledge_popup_max_ref = React.useRef(0);
 
 	// BOUNDARY
 
@@ -75,6 +75,7 @@ function App()
 
 	const renderPledgesHandler = () =>
 	{
+		console.log("re-rendering pledges")
 		return Boundary.renderPledges(model, openPopupHandler, view_pledge_popup_ref, redrawPage);
 	}
 
@@ -102,6 +103,12 @@ function App()
 		await Controller.createProject(model, name.current.value, type.current.value, 
 			story.current.value, goal.current.value, deadline.current.value);
 		await searchProjectHandler(model);
+		redrawPage();
+	}
+
+	const createPledgeHandler = async (amt, reward, max) =>
+	{
+		await Controller.createPledge(model, amt.current.value, reward.current.value, max.current.value);
 		redrawPage();
 	}
 
@@ -237,17 +244,17 @@ function App()
 					<p>Create New Pledge</p>
 					<div>
 						<label>Amount:&nbsp;</label>
-						<input type="text" placeholder="ex: $10.00"></input>
+						<input ref={create_pledge_popup_amount_ref} type="text" placeholder="ex: $10.00"></input>
 					</div>
 					<div>
 						<label>Reward (Optional):&nbsp;</label>
-						<input type="text" placeholder="ex: &quot;3 stickers&quot;"></input>
+						<input ref={create_pledge_popup_reward_ref} type="text" placeholder="ex: &quot;3 stickers&quot;"></input>
 					</div>
 					<div>
 						<label>Max Supporters:&nbsp;</label>
-						<input type="text" placeholder="ex: 20"></input>
+						<input ref={create_pledge_popup_max_ref} type="text" placeholder="ex: 20"></input>
 					</div>
-					<button onClick={() => createProjectHandler(create_project_popup_name_ref, create_project_popup_type_ref, create_project_popup_story_ref, create_project_popup_goal_ref, create_project_popup_deadline_ref)}>Create</button>
+					<button onClick={() => createPledgeHandler(create_pledge_popup_amount_ref, create_pledge_popup_reward_ref, create_pledge_popup_max_ref)}>Create</button>
 				</div>
 
 
@@ -294,14 +301,13 @@ function App()
 					<div className="close-button" style={layout.close_button}>
 						<button onClick={() => closePopupHandler(view_pledge_popup_ref)}>X</button>
 					</div>
-					<p>PLEDGE NAME</p>
 					<div style={{ display: "flex", alignItems: "center" }}>
 						<label>Reward:&nbsp;</label>
-						<p>REWARD REWARD 3 STICKERS 🥵</p>
+						<p>{model.cur_pl.reward}</p>
 					</div>
 					<div style={{ display: "flex", alignItems: "center" }}>
 						<label>Max Supporters:&nbsp;</label>
-						<p>MAX # OF SUPPORTERS</p>
+						<p>{model.cur_pl.curSupporter} / {model.cur_pl.maxSupporter}</p>
 					</div>
 				</div>
 

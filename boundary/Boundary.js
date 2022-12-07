@@ -167,29 +167,28 @@ export class Boundary
 
 		let i = 0;
 		let tmp = (model.cur_proj.pledges ? model.cur_proj.pledges : [])
-		console.log("model proj pledgse null?", !(model.cur_proj.pledges), "=>", model.cur_proj.pledges, "mapping:", tmp);
+		// console.log("model proj pledgse null?", !(model.cur_proj.pledges), "=>", model.cur_proj.pledges, "mapping:", tmp);
 		let pledges = tmp.map((pl) =>
-			<li key={i++}> <button onClick={updatePledge(pl)}>view</button> ${pl.amount}: {pl.reward}</li>
+			<li key={i++}> <button onClick={() => updatePledge(pl)}>view</button> ${pl.amount}: {pl.reward}</li>
 		);
-		console.log("pledges:", pledges)
 		return <ul style={{listStyle: "none"}}>{pledges}</ul>;
 	}
 
-	static renderPledges1(model)
-	{
-		let i = 0;
-		let tmp = Controller.fetchProjectPledges(model, model.cur_proj.projectID);
-		// TODO: need to check here if curr user has claimed this pledged, replace o with x, add logic for that
-		if(tmp)
-		{
-			// use loop, not map
-			// temp.foreach()
-			let pledges = tmp.map((p) =>
-			// TODO: error comes from calling inside of child, not field like everything else
-			// TODO: could add field to supporter locally after fetched
-			<li key={i++}>({() => Controller.fetchPledgeClaims(model, p.pledgeID)}) <button>O</button> ${p.amount}: {p.reward}</li>
-			);
-			return <ul style={{listStyle: "none"}}>{pledges}</ul>;
-		}
-	}
+	// static renderPledges1(model)
+	// {
+	// 	let i = 0;
+	// 	let tmp = Controller.fetchProjectPledges(model, model.cur_proj.projectID);
+	// 	// TODO: need to check here if curr user has claimed this pledged, replace o with x, add logic for that
+	// 	if(tmp)
+	// 	{
+	// 		// use loop, not map
+	// 		// temp.foreach()
+	// 		let pledges = tmp.map((p) =>
+	// 		// TODO: error comes from calling inside of child, not field like everything else
+	// 		// TODO: could add field to supporter locally after fetched
+	// 		<li key={i++}>({() => Controller.fetchPledgeClaims(model, p.pledgeID)}) <button>O</button> ${p.amount}: {p.reward}</li>
+	// 		);
+	// 		return <ul style={{listStyle: "none"}}>{pledges}</ul>;
+	// 	}
+	// }
 }
