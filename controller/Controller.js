@@ -257,6 +257,36 @@ export class Controller
 		});
 	}
 
+	static launchProject(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/LaunchProject',
+			{
+				"projectID": model.cur_proj.projectID
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				if(info.statusCode === 200)
+				{
+					alert("project successfully launched.");
+					resolve(true);
+				}
+				else
+				{
+					alert("failed to launch project.")
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
 	static searchProjects(model)
 	{
 		return new Promise((resolve, reject) =>

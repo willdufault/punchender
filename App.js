@@ -143,6 +143,15 @@ function App()
 		redrawPage();
 	}
 
+	const launchProjectHandler = async () =>
+	{
+		await Controller.launchProject(model);
+		await searchProjectHandler(model);
+		model.updateCurProj();
+		model.updateCurPl();
+		redrawPage();
+	}
+
 	const directSupportHandler = async (amt) =>
 	{
 		await Controller.directSupport(model, amt.current.value);
@@ -324,6 +333,7 @@ function App()
 					<div style={{ width: "100%", textAlign: "right" }}>
 						<p>Deadline: {parseDeadline(model.cur_proj.deadline)}</p>
 						<div style={{ alignItems: "flex-end" }}>
+							<button onClick={() => launchProjectHandler()}>Launch Project</button>
 							<button onClick={() => deleteProjectHandler(view_project_popup_ref)}>Delete Project</button>
 							<button onClick={() => openPopupHandler(direct_support_popup_ref)}>Direct Support</button>
 						</div>
