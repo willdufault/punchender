@@ -110,6 +110,9 @@ function App()
 	const createPledgeHandler = async (amt, reward, max) =>
 	{
 		await Controller.createPledge(model, amt.current.value, reward.current.value, max.current.value);
+		await searchProjectHandler(model);
+		model.updateCurProj();
+		model.updateCurPl();
 		redrawPage();
 	}
 
@@ -133,14 +136,17 @@ function App()
 	const deleteProjectHandler = async (r) =>
 	{
 		await Controller.deleteProject(model);
-		closePopupHandler(r);
 		await searchProjectHandler(model);
+		closePopupHandler(r);
 		redrawPage();
 	}
 
 	const directSupportHandler = async (amt) =>
 	{
 		await Controller.directSupport(model, amt.current.value);
+		await searchProjectHandler(model);
+		model.updateCurProj();
+		model.updateCurPl();
 		redrawPage();
 	}
 
@@ -148,9 +154,19 @@ function App()
 	const claimPledgeHandler = async (amt) =>
 	{
 		await Controller.claimPledge(model, amt.current.value);
-		redrawPage();
+		await searchProjectHandler(model);
 		model.updateCurProj();
 		model.updateCurPl();
+		redrawPage();
+	}
+
+	const deletePledgeHandler = async (r) =>
+	{
+		await Controller.deletePledge(model);
+		await searchProjectHandler(model);
+		model.updateCurProj();
+		model.updateCurPl();
+		closePopupHandler(r);
 		redrawPage();
 	}
 
@@ -291,8 +307,6 @@ function App()
 							<label>Pledges:&nbsp;</label>
 							{renderPledgesHandler()}
 							<button onClick={() => openPopupHandler(create_pledge_popup_ref)}>Add Pledge</button>
-							{/* //TODO: this sucks */}
-							<p>(Refresh to update.)</p>
 						</div>
 					</div>
 					<div>
@@ -327,6 +341,7 @@ function App()
 						<input ref={view_pledge_popup_amount_ref} type="text" placeholder="ex: 20"></input>
 					</div>
 					<button onClick={() => claimPledgeHandler(view_pledge_popup_amount_ref)}>Claim Pledge</button>
+					<button onClick={() => deletePledgeHandler(view_pledge_popup_ref)}>Delete Pledge</button>
 				</div>
 
 

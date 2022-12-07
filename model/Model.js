@@ -50,6 +50,7 @@ export class Model
 			if(this.projects[i].projectID === id)
 			{
 				this.cur_proj = this.projects[i];
+
 				return;
 			}
 		}
@@ -58,11 +59,11 @@ export class Model
 	updateCurPl()
 	{
 		let id = this.cur_pl.pledgeID;
-		for(let i = 0; i < this.projects.pledge.length; i++)
+		for(let i = 0; i < this.cur_proj.pledges.length; i++)
 		{
-			if(this.projects.pledges[i].pledgeID === id)
+			if(this.cur_proj.pledges[i].pledgeID === id)
 			{
-				this.cur_pl = this.projects.pledges[i];
+				this.cur_pl = this.cur_proj.pledges[i];
 				return;
 			}
 		}

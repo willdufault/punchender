@@ -105,7 +105,7 @@ export class Controller
 				let info = response.data;
 				if(info.statusCode === 200)
 				{
-					alert("successfully added project \"${name}\"");
+					alert(`successfully added project \"${name}\"`);
 					resolve(true);
 				}
 				else
@@ -207,12 +207,12 @@ export class Controller
 				let info = response.data;
 				if(info.statusCode === 200)
 				{
-					alert(`project \"${model.cur_proj.name}\" successfully deleted.`);
+					alert("project successfully deleted.");
 					resolve(true);
 				}
 				else
 				{
-					alert("failed to delete project \"${model.cur_proj.name}\".")
+					alert("failed to delete project.")
 					resolve(false);
 				}
 			})
@@ -261,7 +261,6 @@ export class Controller
 		return new Promise((resolve, reject) =>
 		{
 			console.log(model.user.username)
-			// TODO
 			instance.post('/ReviewSupporterActivity',
 			{
 				"supporter": model.user.username
@@ -303,6 +302,38 @@ export class Controller
 				else
 				{
 					alert("failed to add funds.");
+					resolve(false);
+				}
+			})
+			.catch(function(error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});	
+	}
+
+	static deletePledge(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/DeletePledge',
+			{
+				"pledgeID": model.cur_pl.pledgeID
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				console.log(info)
+				// model.supp_activity = response.data.body;
+				if(info.statusCode === 200)
+				{
+					alert("successfully deleted pledge.");
+					resolve(true);
+				}
+				else
+				{
+					alert("failed to delete pledge.");
 					resolve(false);
 				}
 			})
