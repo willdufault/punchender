@@ -69,6 +69,14 @@ export class Boundary
 			switch(role)
 			{
 				case "admin":
+					document.getElementById('createPledgeID').style.display = 'none';
+					document.getElementById('launchProjectID').style.display = 'none';
+					document.getElementById('deleteProjectID').style.display = 'inline-block';
+					document.getElementById('directSupportID').style.display = 'none';
+					document.getElementById('searchProjectsID').style.display = 'inline-block';
+					document.getElementById('searchByID').style.display = 'inline-block';
+					document.getElementById('claimPledgeID').style.display = 'none';
+					document.getElementById('deletePledgeID').style.display = 'inline-block';
 					return (
 						<div className="admin-dashboard" style={layout.admin_dashboard}>
 							<p className="dashboard-title" style={layout.dashboard_title}>Admin Dashboard</p>
@@ -115,7 +123,7 @@ export class Boundary
 								<button onClick={() => updateSupporterActivity()}>Review Supporter Activity</button>
 							</div>
 							<div style={{width: "90%"}}>
-								<p>Current Balance: {model.user.balance} (CURRENTLY NEED TO REFRESH PAGE TO UPDATE, FIX THIS)</p>
+								<p>Current Budget: {model.user.budget}</p>
 								<button onClick={() => openPopupHandler(add_funds_popup_ref)}>Add Funds</button>
 							</div>
 						</div>

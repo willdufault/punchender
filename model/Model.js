@@ -42,6 +42,7 @@ export class Model
 		this.search = s;
 	}
 
+	// TODO: FIX THIS IT SUCKS
 	updateCurProj()
 	{
 		let id = this.cur_proj.projectID;

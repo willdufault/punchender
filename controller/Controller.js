@@ -32,6 +32,8 @@ export class Controller
 							model.supporterLogIn(info.body.username, info.body.budget);
 							break;
 					}
+					model.search = model.user.username;
+					model.by = "creator";
 					alert(`welcome, ${info.body.username} (${info.body.role})!`);
 					resolve(true);
 				}
@@ -52,6 +54,8 @@ export class Controller
 	static logOut(model, redrawPage)
 	{
 		model.logOut();
+		model.search = "";
+		model.by = "name";
 	}
 
 	static register(user, role)
@@ -138,8 +142,7 @@ export class Controller
 				console.log("this is info:", info)
 				if(info.statusCode === 200)
 				{
-					// TODO: fix refresh page to update
-					alert("successfully added funds (refresh page to update).");
+					alert("successfully added funds.");
 					resolve(true);
 				}
 				else
@@ -210,7 +213,7 @@ export class Controller
 				console.log("this is info:", info)
 				if(info.statusCode === 200)
 				{
-					alert(`you claimed this pledge! (refresh to update)`);
+					alert(`you claimed this pledge!`);
 					resolve(true);
 				}
 				else
@@ -299,7 +302,7 @@ export class Controller
 			.then(function(response)
 			{
 				let info = response.data;
-				console.log(info)
+				console.log("SEARCH PROJECT INFO:", info)
 				if(info.statusCode === 200)
 				{
 					model.projects = info.body;
@@ -379,7 +382,97 @@ export class Controller
 		});
 	}
 
-	static reap(model)
+	static supporterBudget(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			console.log("username:", model.user.username)
+			instance.post('/SupporterBudget',
+			{
+				"username": model.user.username
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				console.log("suppBUDGET:", info)
+				if(info.statusCode === 200)
+				{
+					model.user.budget = info.body;
+					console.log("budget now:", model.user.budget)
+					resolve(true);
+				}
+				else
+				{
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static updateProject(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/getProject',
+			{
+				"projectID": model.cur_proj.projectID
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				if(info.statusCode === 200)
+				{
+					model.cur_proj = info.body;
+					resolve(true);
+				}
+				else
+				{
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static updatePledge(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/GetPledge',
+			{
+				"pledgeID": model.cur_pl.pledgeID
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				if(info.statusCode === 200)
+				{
+					model.cur_pl = info.body;
+					resolve(true);
+				}
+				else
+				{
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static reap()
 	{
 		return new Promise((resolve, reject) =>
 		{

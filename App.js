@@ -91,8 +91,6 @@ function App()
 
 	const logOutHandler = async () =>
 	{
-		
-		
 		document.getElementById('searchProjectsID').style.display = 'none';
 		document.getElementById('searchByID').style.display = 'none';
 		Controller.logOut(model, redrawPage);
@@ -117,8 +115,10 @@ function App()
 	{
 		await Controller.createPledge(model, amt.current.value, reward.current.value, max.current.value);
 		await searchProjectHandler(model);
-		model.updateCurProj();
-		model.updateCurPl();
+		await Controller.updateProject(model);
+		await Controller.updatePledge(model);
+		// model.updateCurProj();
+		// model.updateCurPl();
 		redrawPage();
 	}
 
@@ -151,27 +151,34 @@ function App()
 	{
 		await Controller.launchProject(model);
 		await searchProjectHandler(model);
-		model.updateCurProj();
-		model.updateCurPl();
+		await Controller.updateProject(model);
+		await Controller.updatePledge(model)
+		// model.updateCurProj();
+		// model.updateCurPl();
 		redrawPage();
 	}
 
 	const directSupportHandler = async (amt) =>
 	{
 		await Controller.directSupport(model, amt.current.value);
+		await Controller.supporterBudget(model);
 		await searchProjectHandler(model);
-		model.updateCurProj();
-		model.updateCurPl();
+		await Controller.updateProject(model);
+		await Controller.updatePledge(model)
+		// model.updateCurProj();
+		// model.updateCurPl();
 		redrawPage();
 	}
 
-	// TODO: could have a function that updates cur_proj in model by search for that prid
 	const claimPledgeHandler = async (amt) =>
 	{
 		await Controller.claimPledge(model, amt.current.value);
+		await Controller.supporterBudget(model);
 		await searchProjectHandler(model);
-		model.updateCurProj();
-		model.updateCurPl();
+		await Controller.updateProject(model);
+		await Controller.updatePledge(model)
+		// model.updateCurProj();
+		// model.updateCurPl();
 		redrawPage();
 	}
 
@@ -179,8 +186,10 @@ function App()
 	{
 		await Controller.deletePledge(model);
 		await searchProjectHandler(model);
-		model.updateCurProj();
-		model.updateCurPl();
+		await Controller.updateProject(model);
+		await Controller.updatePledge(model)
+		// model.updateCurProj();
+		// model.updateCurPl();
 		closePopupHandler(r);
 		redrawPage();
 	}
@@ -188,6 +197,7 @@ function App()
 	const addFundsHandler = async (r) =>
 	{
 		await Controller.addFunds(model, r.current.value);
+		await Controller.supporterBudget(model);
 		redrawPage();
 	}
 
@@ -374,8 +384,8 @@ function App()
 					</div>
 					<p>Add Funds</p>
 					<div style={{ display: "flex", alignItems: "flex-start" }}>
-						<label>Balance ($):&nbsp;</label>
-						<p style={{ margin: 0 }}>${(model.user ? model.user.balance : 0)}</p>
+						<label>Budget ($):&nbsp;</label>
+						<p style={{ margin: 0 }}>${(model.user ? model.user.budget : 0)}</p>
 					</div>
 					<div>
 						<label>Amount to add ($):&nbsp;</label>
