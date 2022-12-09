@@ -139,11 +139,12 @@ export class Boundary
 	{
 		const renderAct = (act) =>
 		{
-			if(act.pledgeID)
+			console.log("rendering, prid=", act.projectID, ", plid=", act.pledgeID)
+			if(act.pledge_name)
 			{
 				return (
 					// called pledge name, supposed to be reward
-					<p>Claimed {act.project_name}'s {act.pledge_name} for ${act.amount}</p>
+					<p>Claimed {act.project_name}'s "{act.pledge_name}" for ${act.amount}</p>
 				)
 			}
 			// project
