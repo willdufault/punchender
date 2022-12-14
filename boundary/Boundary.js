@@ -65,8 +65,7 @@ export class Boundary
 
 		if(model.user)
 		{
-			const role = model.user.constructor.name.toLowerCase();
-			switch(role)
+			switch(model.role)
 			{
 				case "admin":
 					document.getElementById('createPledgeID').style.display = 'none';

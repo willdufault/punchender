@@ -423,6 +423,8 @@ function App()
 						<option value="name">Project Name</option>
 						<option value="type">Type/Genre</option>
 						<option value="creator">Creator</option>
+						<option value="story">Story</option>
+						<option value="deadline">Deadline</option>
 					</select>
 				</div>
 				{renderProjectsHandler()}
