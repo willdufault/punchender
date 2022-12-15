@@ -76,6 +76,8 @@ export class Boundary
 					document.getElementById('searchByID').style.display = 'inline-block';
 					document.getElementById('claimPledgeID').style.display = 'none';
 					document.getElementById('deletePledgeID').style.display = 'inline-block';
+					document.getElementById('viewPledgeAmount').style.display = 'none';
+					document.getElementById('reviewProjectActivityID').style.display = 'inline-block';
 					return (
 						<div className="admin-dashboard" style={layout.admin_dashboard}>
 							<p className="dashboard-title" style={layout.dashboard_title}>Admin Dashboard</p>
@@ -94,6 +96,8 @@ export class Boundary
 					document.getElementById('searchByID').style.display = 'none';
 					document.getElementById('claimPledgeID').style.display = 'none';
 					document.getElementById('deletePledgeID').style.display = 'inline-block';
+					document.getElementById('viewPledgeAmount').style.display = 'none';
+					document.getElementById('reviewProjectActivityID').style.display = 'inline-block';
 
 					return (
 						<div className="designer-dashboard" style={layout.designer_dashboard}>
@@ -113,6 +117,9 @@ export class Boundary
 					document.getElementById('searchByID').style.display = 'inline-block';
 					document.getElementById('claimPledgeID').style.display = 'inline-block';
 					document.getElementById('deletePledgeID').style.display = 'none';
+					document.getElementById('viewPledgeAmount').style.display = 'inline-block';
+					document.getElementById('reviewProjectActivityID').style.display = 'none';
+
 					return (
 						<div className="supporter-dashboard" style={layout.supporter_dashboard}>
 							<p>Supporter Dashboard</p>
@@ -138,7 +145,7 @@ export class Boundary
 	{
 		const renderAct = (act) =>
 		{
-			console.log("rendering, prid=", act.projectID, ", plid=", act.pledgeID)
+			// console.log("rendering, prid=", act.projectID, ", plid=", act.pledgeID)
 			if(act.pledge_name)
 			{
 				return (
@@ -196,9 +203,11 @@ export class Boundary
 
 	static renderPledges(model, openPopupHandler, view_pledge_popup_ref, redrawPage)
 	{
-		const updatePledge = (pl) =>
+		const updatePledge = async (pl) =>
 		{
 			model.cur_pl = pl;
+			await Controller.updatePledge(model);
+			// console.log("cur pl now =", model.cur_pl)
 			redrawPage();
 			openPopupHandler(view_pledge_popup_ref);
 		}
@@ -212,21 +221,25 @@ export class Boundary
 		return <ul style={{listStyle: "none"}}>{pledges}</ul>;
 	}
 
-	// static renderPledges1(model)
-	// {
-	// 	let i = 0;
-	// 	let tmp = Controller.fetchProjectPledges(model, model.cur_proj.projectID);
-	// 	// TODO: need to check here if curr user has claimed this pledged, replace o with x, add logic for that
-	// 	if(tmp)
-	// 	{
-	// 		// use loop, not map
-	// 		// temp.foreach()
-	// 		let pledges = tmp.map((p) =>
-	// 		// TODO: error comes from calling inside of child, not field like everything else
-	// 		// TODO: could add field to supporter locally after fetched
-	// 		<li key={i++}>({() => Controller.fetchPledgeClaims(model, p.pledgeID)}) <button>O</button> ${p.amount}: {p.reward}</li>
-	// 		);
-	// 		return <ul style={{listStyle: "none"}}>{pledges}</ul>;
-	// 	}
-	// }
+	static renderPledgeSupporters(model)
+	{
+		let i = 0;
+		// console.log("in render, cur_pl =", model.cur_pl)
+		let tmp = (model.cur_pl.supporters ? model.cur_pl.supporters : [])
+		let supps = tmp.map((s) =>
+			<li key={i++}> {s.supporter}: ${s.amount}</li>
+		);
+		return <ul style={{listStyle: "none"}}>{supps}</ul>;
+	}
+
+	static renderProjectActivity(model)
+	{
+		let i = 0;
+		// console.log("in render, cur_pl =", model.cur_pl)
+		let tmp = (model.proj_act ? model.proj_act : [])
+		let supps = tmp.map((a) =>
+			<li key={i++}> {a.supporter}: ${a.amount}</li>
+		);
+		return <ul style={{listStyle: "none"}}>{supps}</ul>;
+	}
 }

@@ -45,6 +45,8 @@ function App()
 	let create_pledge_popup_reward_ref = React.useRef(0);
 	let create_pledge_popup_max_ref = React.useRef(0);
 	let view_pledge_popup_amount_ref = React.useRef(0);
+	let view_pledge_view_supporters_popup_ref = React.useRef(0);
+	let review_project_activity_popup_ref = React.useRef(0);
 
 	// BOUNDARY
 
@@ -77,11 +79,28 @@ function App()
 
 	const renderPledgesHandler = () =>
 	{
-		// console.log("re-rendering pledges")
 		return Boundary.renderPledges(model, openPopupHandler, view_pledge_popup_ref, redrawPage);
 	}
 
+	const renderPledgeSupportersHandler = () =>
+	{
+		// can't be async
+		return Boundary.renderPledgeSupporters(model);
+	}
+
+	const renderProjectActivityHandler = () =>
+	{
+		return Boundary.renderProjectActivity(model);
+	}
+
 	// CONTROLLER
+
+	const reviewProjectActivityHandler = async (r) =>
+	{
+		await Controller.reviewProjectActivity(model);
+		openPopupHandler(r);
+		redrawPage();
+	}
 
 	const logInHandler = async (user) =>
 	{
@@ -107,14 +126,14 @@ function App()
 	{
 		await Controller.createProject(model, name.current.value, type.current.value, 
 			story.current.value, goal.current.value, deadline.current.value);
-		await searchProjectHandler(model);
+		await Controller.searchProjects(model);
 		redrawPage();
 	}
 
 	const createPledgeHandler = async (amt, reward, max) =>
 	{
 		await Controller.createPledge(model, amt.current.value, reward.current.value, max.current.value);
-		await searchProjectHandler(model);
+		await searchProjectsHandler(model);
 		await Controller.updateProject(model);
 		await Controller.updatePledge(model);
 		// model.updateCurProj();
@@ -122,7 +141,7 @@ function App()
 		redrawPage();
 	}
 
-	const searchProjectHandler = async () =>
+	const searchProjectsHandler = async () =>
 	{
 		await Controller.searchProjects(model);
 		redrawPage();
@@ -135,14 +154,14 @@ function App()
 		{
 			model.updateSearch(search_bar.current.value);
 			model.by = field.current.value
-			await searchProjectHandler(model);
+			await searchProjectsHandler(model);
 		}
 	}
 
 	const deleteProjectHandler = async (r) =>
 	{
 		await Controller.deleteProject(model);
-		await searchProjectHandler(model);
+		await Controller.searchProjects(model);
 		closePopupHandler(r);
 		redrawPage();
 	}
@@ -150,7 +169,7 @@ function App()
 	const launchProjectHandler = async () =>
 	{
 		await Controller.launchProject(model);
-		await searchProjectHandler(model);
+		await searchProjectsHandler(model);
 		await Controller.updateProject(model);
 		await Controller.updatePledge(model)
 		// model.updateCurProj();
@@ -162,7 +181,7 @@ function App()
 	{
 		await Controller.directSupport(model, amt.current.value);
 		await Controller.supporterBudget(model);
-		await searchProjectHandler(model);
+		await searchProjectsHandler(model);
 		await Controller.updateProject(model);
 		await Controller.updatePledge(model)
 		// model.updateCurProj();
@@ -174,7 +193,7 @@ function App()
 	{
 		await Controller.claimPledge(model, amt.current.value);
 		await Controller.supporterBudget(model);
-		await searchProjectHandler(model);
+		await searchProjectsHandler(model);
 		await Controller.updateProject(model);
 		await Controller.updatePledge(model)
 		// model.updateCurProj();
@@ -185,7 +204,7 @@ function App()
 	const deletePledgeHandler = async (r) =>
 	{
 		await Controller.deletePledge(model);
-		await searchProjectHandler(model);
+		await searchProjectsHandler(model);
 		await Controller.updateProject(model);
 		await Controller.updatePledge(model)
 		// model.updateCurProj();
@@ -347,6 +366,7 @@ function App()
 					<div style={{ width: "100%", textAlign: "right" }}>
 						<p>Deadline: {parseDeadline(model.cur_proj.deadline)}</p>
 						<div style={{ alignItems: "flex-end" }}>
+							<button onClick={() => reviewProjectActivityHandler(review_project_activity_popup_ref)} style={{display : "none"}} id="reviewProjectActivityID">Review Project Activity</button>
 							<button onClick={() => launchProjectHandler()} style={{display : "none"}} id = "launchProjectID">Launch Project</button>
 							<button onClick={() => deleteProjectHandler(view_project_popup_ref)} style={{display : "none"}} id = "deleteProjectID">Delete Project</button>
 							<button onClick={() => openPopupHandler(direct_support_popup_ref)} style={{display : "none"}} id = "directSupportID">Direct Support</button>
@@ -354,6 +374,14 @@ function App()
 					</div>
 				</div>
 
+
+				<div ref={review_project_activity_popup_ref} className="review-project-activity-popup" style={layout.login_popup}>
+					<div className="close-button" style={layout.close_button}>
+						<button onClick={() => closePopupHandler(review_project_activity_popup_ref)}>X</button>
+					</div>
+					<p>Activity for "{model.cur_proj.name}":</p>
+					{renderProjectActivityHandler()}
+				</div>
 
 
 				<div ref={view_pledge_popup_ref} className="view-pledge-popup" style={layout.view_pledge_popup}>
@@ -365,15 +393,26 @@ function App()
 						<p>{model.cur_pl.reward}</p>
 					</div>
 					<div style={{ display: "flex", alignItems: "center" }}>
-						<label>Supporters:&nbsp;</label>
+						<label>Supporters:&nbsp;</label> 	
 						<p>{model.cur_pl.curSupporters} / {model.cur_pl.maxSupporter}</p>
 					</div>
-					<div style={{ display: "flex", alignItems: "center" }}>
+					<button onClick={() => openPopupHandler(view_pledge_view_supporters_popup_ref)}>View Supporters</button>
+					<div style={{ display: "flex", alignItems: "center" }} id="viewPledgeAmount">
 						<label>Amount ($):&nbsp;</label>
 						<input ref={view_pledge_popup_amount_ref} type="text" placeholder="ex: 20"></input>
 					</div>
 					<button onClick={() => claimPledgeHandler(view_pledge_popup_amount_ref)} style={{display : "none"}} id = "claimPledgeID">Claim Pledge</button>
 					<button onClick={() => deletePledgeHandler(view_pledge_popup_ref)} style={{display : "none"}} id = "deletePledgeID">Delete Pledge</button>
+				</div>
+
+
+
+				<div ref={view_pledge_view_supporters_popup_ref} className="view-pledge-view-supps-popup" style={layout.login_popup}>
+					<div className="close-button" style={layout.close_button}>
+						<button onClick={() => closePopupHandler(view_pledge_view_supporters_popup_ref)}>X</button>
+					</div>
+					<p>Supporters:</p>
+					{renderPledgeSupportersHandler()}
 				</div>
 
 

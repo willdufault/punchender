@@ -109,12 +109,12 @@ export class Controller
 				let info = response.data;
 				if(info.statusCode === 200)
 				{
-					alert(`successfully added project \"${name}\"`);
+					alert(`successfully added project "${name}"`);
 					resolve(true);
 				}
 				else
 				{
-					alert(`failed to add project \"${name}\".`);
+					alert(`failed to add project "${name}".`);
 					resolve(false);
 				}
 			})
@@ -454,9 +454,41 @@ export class Controller
 			.then(function(response)
 			{
 				let info = response.data;
+				// console.log("new pledge:", info.body)
 				if(info.statusCode === 200)
 				{
 					model.cur_pl = info.body;
+					resolve(true);
+				}
+				else
+				{
+					resolve(false);
+				}
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+				reject(error);
+			});
+		});
+	}
+
+	static reviewProjectActivity(model)
+	{
+		return new Promise((resolve, reject) =>
+		{
+			instance.post('/ReviewProjectActivity',
+			{
+				"projectID": model.cur_proj.projectID
+			})
+			.then(function(response)
+			{
+				let info = response.data;
+				// console.log("new pledge:", info.body)
+				if(info.statusCode === 200)
+				{
+					model.proj_act = info.body;
+					// console.log("project activity:", model.proj_act)
 					resolve(true);
 				}
 				else

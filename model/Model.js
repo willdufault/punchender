@@ -1,7 +1,6 @@
 import { Supporter } from "./Supporter";
 import { Designer } from "./Designer";
 import { Admin } from "./Admin";
-import { Database } from "./Database";
 
 export class Model
 {
@@ -11,11 +10,11 @@ export class Model
 		this.role = ""  // role of current user
 		this.cur_proj = {};
 		this.cur_pl = {};
+		this.proj_act = []  // cur proj activity
 		this.projects = [];
 		this.search = "";
 		this.by = "name";  // search by this
 		this.supp_activity = [];
-		this.db = new Database();
 	}
 
 	adminLogIn(user)
