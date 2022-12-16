@@ -394,9 +394,9 @@ function App()
 					</div>
 					<div style={{ display: "flex", alignItems: "center" }}>
 						<label>Supporters:&nbsp;</label> 	
-						<p>{model.cur_pl.curSupporters} / {model.cur_pl.maxSupporter}</p>
+						<p>{model.cur_pl.curSupporters} / {(model.cur_pl.maxSupporter === 9999999) ? "inf" : model.cur_pl.maxSupporter}</p>
 					</div>
-					<button onClick={() => openPopupHandler(view_pledge_view_supporters_popup_ref)}>View Supporters</button>
+					<button onClick={() => openPopupHandler(view_pledge_view_supporters_popup_ref)} id="viewSupportersID">View Supporters</button>
 					<div style={{ display: "flex", alignItems: "center" }} id="viewPledgeAmount">
 						<label>Amount ($):&nbsp;</label>
 						<input ref={view_pledge_popup_amount_ref} type="text" placeholder="ex: 20"></input>
@@ -462,7 +462,7 @@ function App()
 						<option value="name">Project Name</option>
 						<option value="type">Type/Genre</option>
 						<option value="creator">Creator</option>
-						<option value="story">Story</option>
+						<option value="story">Story/Description</option>
 						<option value="deadline">Deadline</option>
 					</select>
 				</div>

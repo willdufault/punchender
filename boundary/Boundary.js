@@ -43,7 +43,6 @@ export class Boundary
 			redrawPage();
 		}
 
-
 		const designerListHandler = async () =>
 		{
 			await Controller.dList(model);
@@ -78,6 +77,8 @@ export class Boundary
 					document.getElementById('deletePledgeID').style.display = 'inline-block';
 					document.getElementById('viewPledgeAmount').style.display = 'none';
 					document.getElementById('reviewProjectActivityID').style.display = 'inline-block';
+					document.getElementById('viewSupportersID').style.display = 'inline-block';
+
 					return (
 						<div className="admin-dashboard" style={layout.admin_dashboard}>
 							<p className="dashboard-title" style={layout.dashboard_title}>Admin Dashboard</p>
@@ -98,6 +99,7 @@ export class Boundary
 					document.getElementById('deletePledgeID').style.display = 'inline-block';
 					document.getElementById('viewPledgeAmount').style.display = 'none';
 					document.getElementById('reviewProjectActivityID').style.display = 'inline-block';
+					document.getElementById('viewSupportersID').style.display = 'inline-block';
 
 					return (
 						<div className="designer-dashboard" style={layout.designer_dashboard}>
@@ -119,6 +121,7 @@ export class Boundary
 					document.getElementById('deletePledgeID').style.display = 'none';
 					document.getElementById('viewPledgeAmount').style.display = 'inline-block';
 					document.getElementById('reviewProjectActivityID').style.display = 'none';
+					document.getElementById('viewSupportersID').style.display = 'none';
 
 					return (
 						<div className="supporter-dashboard" style={layout.supporter_dashboard}>
@@ -146,11 +149,11 @@ export class Boundary
 		const renderAct = (act) =>
 		{
 			// console.log("rendering, prid=", act.projectID, ", plid=", act.pledgeID)
-			if(act.pledge_name)
+			if(act.reward)
 			{
 				return (
 					// called pledge name, supposed to be reward
-					<p>Claimed {act.project_name}'s "{act.pledge_name}" for ${act.amount}</p>
+					<p>Claimed {act.project_name}'s "{act.reward}" for ${act.amount}</p>
 				)
 			}
 			// project
@@ -240,6 +243,11 @@ export class Boundary
 		let supps = tmp.map((a) =>
 			<li key={i++}> {a.supporter}: ${a.amount}</li>
 		);
-		return <ul style={{listStyle: "none"}}>{supps}</ul>;
+		return (
+			<div>
+				<p>{(model.cur_proj.amount >= model.cur_proj.goal) ? "GOAL REACHED!" : "has not met goal."}</p>
+				<ul style={{listStyle: "none"}}>{supps}</ul>
+			</div>
+		);
 	}
 }
