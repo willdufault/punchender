@@ -1,3 +1,5 @@
 # punchender-react
 
-kickstarter? never heard of her
+the src folder for our react project
+
+the lambda functions are in lambda-functions.zip
