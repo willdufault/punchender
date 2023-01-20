@@ -1,5 +1,5 @@
-# punchender-react
+# punchender
 
-the src folder for our react project
+This repository contains the source (src) folder for our React.js project.
 
-the lambda functions are in lambda-functions.zip
+Our AWS Lambda functions can be found in lambda-functions.zip.
